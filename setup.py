@@ -58,6 +58,7 @@ setuptools.setup(
         "ordereddict>=1.1",
         "pyyaml>=4.2b1",
         "pySankeyBeta~=1.2.2",
+        "django-tinymce>=3.0",
     ],
     extras_require={
         "dev": [

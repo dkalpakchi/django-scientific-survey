@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
+import random
 import uuid
 
 from django import forms
@@ -44,6 +45,7 @@ class ResponseForm(models.ModelForm):
         """ Expects a survey object to be passed in initially """
         self.survey = kwargs.pop("survey")
         self.user = kwargs.pop("user")
+        self.random_seed = kwargs.pop("seed") or random.randint(0, 1000000)
         try:
             self.step = int(kwargs.pop("step"))
         except KeyError:
@@ -53,6 +55,7 @@ class ResponseForm(models.ModelForm):
 
         self.categories = self.survey.non_empty_categories()
         self.qs_with_no_cat = self.survey.questions.filter(category__isnull=True).order_by("order", "id")
+        self.randomize_questions = self.survey.questions.filter(order__isnull=True)
 
         if self.survey.display_method == Survey.BY_CATEGORY:
             self.steps_count = len(self.categories) + (1 if self.qs_with_no_cat else 0)
@@ -62,9 +65,11 @@ class ResponseForm(models.ModelForm):
         self.response = False
         self.answers = False
 
-        self.add_questions(kwargs.get("data"))
-
         self._get_preexisting_response()
+        if self.response:
+            self.random_seed = self.response.random_seed
+
+        self.add_questions(kwargs.get("data"))
 
         if not self.survey.editable_answers and self.response is not None:
             for name in self.fields.keys():
@@ -76,14 +81,25 @@ class ResponseForm(models.ModelForm):
 
         if self.survey.display_method == Survey.BY_CATEGORY and self.step is not None:
             if self.step == len(self.categories):
-                qs_for_step = self.survey.questions.filter(category__isnull=True).order_by("order", "id")
+                qs_for_step = self.qs_with_no_cat
             else:
-                qs_for_step = self.survey.questions.filter(category=self.categories[self.step])
+                qs_for_step = self.survey.questions.filter(category=self.categories[self.step]).order_by("order", "id")
+
+            if self.randomize_questions:
+                qs_for_step = list(qs_for_step.all())
+                random.seed(self.random_seed)
+                random.shuffle(qs_for_step)
 
             for question in qs_for_step:
                 self.add_question(question, data)
         else:
-            for i, question in enumerate(self.survey.questions.all()):
+            questions = self.survey.questions.order_by("order", "id").all()
+            if self.randomize_questions:
+                questions = list(questions)
+                random.seed(self.random_seed)
+                random.shuffle(questions)
+
+            for i, question in enumerate(questions):
                 not_to_keep = i != self.step and self.step is not None
                 if self.survey.display_method == Survey.BY_QUESTION and not_to_keep:
                     continue
@@ -256,11 +272,22 @@ class ResponseForm(models.ModelForm):
 
     def next_step_url(self):
         if self.has_next_step():
-            context = {"id": self.survey.id, "step": self.step + 1}
+            context = {
+                "id": self.survey.id,
+                "step": self.step + 1,
+                "seed": self.random_seed if self.randomize_questions else 0,
+            }
             return reverse("survey-detail-step", kwargs=context)
 
     def current_step_url(self):
-        return reverse("survey-detail-step", kwargs={"id": self.survey.id, "step": self.step})
+        return reverse(
+            "survey-detail-step",
+            kwargs={
+                "id": self.survey.id,
+                "step": self.step,
+                "seed": self.random_seed if self.randomize_questions else 0,
+            },
+        )
 
     def save(self, commit=True):
         """ Save the response object """
@@ -273,6 +300,7 @@ class ResponseForm(models.ModelForm):
             response = super(ResponseForm, self).save(commit=False)
         response.survey = self.survey
         response.interview_uuid = self.uuid
+        response.random_seed = self.random_seed
         if self.user.is_authenticated:
             response.user = self.user
         response.save()

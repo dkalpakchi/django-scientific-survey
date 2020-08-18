@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 
+from tinymce.models import HTMLField
+
 
 def in_duration_day():
     return now() + timedelta(days=settings.DEFAULT_SURVEY_PUBLISHING_DURATION)
@@ -25,7 +27,7 @@ class Survey(models.Model):
     ]
 
     name = models.CharField(_("Name"), max_length=400)
-    description = models.TextField(_("Description"))
+    description = HTMLField(_("Description"), null=True, blank=True)
     is_published = models.BooleanField(_("Users can see it and answer it"), default=True)
     need_logged_user = models.BooleanField(_("Only authenticated users can see it and answer it"))
     editable_answers = models.BooleanField(_("Users can edit their answers afterwards"), default=True)

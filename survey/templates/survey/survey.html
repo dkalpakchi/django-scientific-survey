@@ -26,11 +26,12 @@
 	<div class="survey-description"> {{survey.description|safe}} </div>
 	<div>
       {% if step and step != 0 %}
-		<form action="{% url 'survey-detail-step' id=survey.id step=step %}" method="post">
+		<form action="{% url 'survey-detail-step' id=survey.id step=step seed=response_form.random_seed %}" method="post">
 	{% else %}
 		<form action="{% url 'survey-detail' id=survey.id %}" method="post">
 	{% endif %}
 	    {% csrf_token %}
+      <input type="hidden" name="seed" value="{{response_form.random_seed}}">
         {% for category in categories %}
             <h3> {{category}} </h3>
             <p> {{category.description}} </p>

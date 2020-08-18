@@ -27,6 +27,12 @@ options for this question ."""
 )
 
 
+ORDER_HELP_TEXT = _(
+    """If no order is specified, the questions will be shown
+in a random order"""
+)
+
+
 def validate_choices(choices):
     """  Verifies that there is at least two choices in choices
     :param String choices: The string representing the user choices.
@@ -72,7 +78,7 @@ class Question(models.Model):
     )
 
     text = models.TextField(_("Text"))
-    order = models.IntegerField(_("Order"))
+    order = models.IntegerField(_("Order"), blank=True, null=True, help_text=ORDER_HELP_TEXT)
     required = models.BooleanField(_("Required"))
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, verbose_name=_("Category"), blank=True, null=True, related_name="questions"

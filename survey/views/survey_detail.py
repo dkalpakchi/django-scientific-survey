@@ -16,6 +16,7 @@ class SurveyDetail(View):
     def get(self, request, *args, **kwargs):
         survey = kwargs.get("survey")
         step = kwargs.get("step", 0)
+        seed = kwargs.get("seed")
         if survey.template is not None and len(survey.template) > 4:
             template_name = survey.template
         else:
@@ -26,7 +27,7 @@ class SurveyDetail(View):
         if survey.need_logged_user and not request.user.is_authenticated:
             return redirect("%s?next=%s" % (settings.LOGIN_URL, request.path))
 
-        form = ResponseForm(survey=survey, user=request.user, step=step)
+        form = ResponseForm(survey=survey, user=request.user, step=step, seed=seed)
         categories = form.current_categories()
 
         asset_context = {
@@ -49,7 +50,9 @@ class SurveyDetail(View):
         if survey.need_logged_user and not request.user.is_authenticated:
             return redirect("%s?next=%s" % (settings.LOGIN_URL, request.path))
 
-        form = ResponseForm(request.POST, survey=survey, user=request.user, step=kwargs.get("step", 0))
+        form = ResponseForm(
+            request.POST, survey=survey, user=request.user, step=kwargs.get("step", 0), seed=request.POST.get("seed")
+        )
         categories = form.current_categories()
 
         if not survey.editable_answers and form.response is not None:
@@ -86,7 +89,9 @@ class SurveyDetail(View):
         else:
             # when it's the last step
             if not form.has_next_step():
-                save_form = ResponseForm(request.session[session_key], survey=survey, user=request.user)
+                save_form = ResponseForm(
+                    request.session[session_key], survey=survey, user=request.user, seed=form.random_seed
+                )
                 if save_form.is_valid():
                     response = save_form.save()
                 else:
