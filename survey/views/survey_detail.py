@@ -83,6 +83,8 @@ class SurveyDetail(View):
             request.session[session_key][key] = value
             request.session.modified = True
         next_url = form.next_step_url()
+        request.session[session_key]["next_url"] = next_url
+        request.session.modified = True
         response = None
         if survey.is_all_in_one_page():
             response = form.save()

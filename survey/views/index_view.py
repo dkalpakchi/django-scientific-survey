@@ -17,4 +17,9 @@ class IndexView(TemplateView):
         if not self.request.user.is_authenticated:
             surveys = surveys.filter(need_logged_user=False)
         context["surveys"] = surveys
+        context["started_surveys"] = {
+            int(x.split("_")[1]): self.request.session[x].get("next_url")
+            for x in self.request.session.keys()
+            if x.startswith("survey_")
+        }
         return context

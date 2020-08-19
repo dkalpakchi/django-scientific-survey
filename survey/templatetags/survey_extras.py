@@ -20,6 +20,13 @@ def collapse_form(form, category):
 register.filter("collapse_form", collapse_form)
 
 
+def get_by_key(dictionary, key):
+    return dictionary[key]
+
+
+register.filter("get_by_key", get_by_key)
+
+
 class CounterNode(template.Node):
     def __init__(self):
         self.count = 0

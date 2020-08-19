@@ -45,11 +45,15 @@ class ResponseForm(models.ModelForm):
         """ Expects a survey object to be passed in initially """
         self.survey = kwargs.pop("survey")
         self.user = kwargs.pop("user")
-        self.random_seed = kwargs.pop("seed") or random.randint(0, 1000000)
         try:
             self.step = int(kwargs.pop("step"))
         except KeyError:
             self.step = None
+
+        try:
+            self.random_seed = int(kwargs.pop("seed"))
+        except (KeyError, ValueError, TypeError):
+            self.random_seed = random.randint(0, 1000000)
         super(ResponseForm, self).__init__(*args, **kwargs)
         self.uuid = uuid.uuid4().hex
 
