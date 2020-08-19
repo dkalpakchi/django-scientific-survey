@@ -12,7 +12,7 @@
 	{% if form.field.widget.attrs.category == category.name or not form.field.widget.attrs.category %}
         <tr class="{% if form.errors%} danger {% endif %}">
             <td>
-	            {{ form.label|safe }}
+	            {{ form.label|safe|linebreaksbr }}
 	            {% if form.field.required %}
 	                <span class="glyphicon glyphicon-asterisk" style="color:red"> </span>
 	            {% endif %}

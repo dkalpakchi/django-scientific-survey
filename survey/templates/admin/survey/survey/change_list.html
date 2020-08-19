@@ -1,0 +1,44 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block object-tools-items %}
+{{ block.super }}
+<style type="text/css">
+    label.link {
+        display: block;
+        float: left;
+        padding: 3px 12px;
+        padding-right: 12px;
+        background: #999;
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: repeat;
+        background-image: none;
+        font-weight: 400;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #fff;
+        border-radius: 15px;
+    }
+
+    label.link:hover, label.link:active {
+        background-color: #417690;
+        cursor: pointer;
+    }
+</style>
+
+<li>
+    <form id="importForm" enctype="multipart/form-data" action="{% url 'survey-import-from-csv' %}" method="POST">
+        {% csrf_token %}
+        <label for="survey_import" class="link">
+            <input id="survey_import" name="survey_import" type="file" style="display:none;" onchange="(function() { document.getElementById('importForm').submit(); })();">
+            Import from CSV
+        </label>
+    </form>
+</li>
+
+<script>
+
+</script>
+{% endblock %}
