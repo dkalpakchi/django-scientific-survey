@@ -82,15 +82,18 @@ class SurveyDetail(View):
         for key, value in list(form.cleaned_data.items()):
             request.session[session_key][key] = value
             request.session.modified = True
+
         next_url = form.next_step_url()
-        request.session[session_key]["next_url"] = next_url
-        request.session.modified = True
+
         response = None
         if survey.is_all_in_one_page():
             response = form.save()
         else:
             # when it's the last step
-            if not form.has_next_step():
+            if form.has_next_step():
+                request.session[session_key]["next_url"] = next_url
+                request.session.modified = True
+            else:
                 save_form = ResponseForm(
                     request.session[session_key], survey=survey, user=request.user, seed=form.random_seed
                 )
@@ -102,11 +105,14 @@ class SurveyDetail(View):
         if next_url is not None:
             return redirect(next_url)
         del request.session[session_key]
+
         if response is None:
             return redirect(reverse("survey-list"))
+
         next_ = request.session.get("next", None)
         if next_ is not None:
             if "next" in request.session:
                 del request.session["next"]
             return redirect(next_)
+
         return redirect("survey-confirmation", uuid=response.interview_uuid)
