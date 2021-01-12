@@ -65,9 +65,6 @@ class Survey2Csv(Survey2X):
         user_answers[answer.question.pk] = cell
 
     def get_header_and_order(self):
-        """ Creating header.
-
-        :param Survey survey: The survey we're treating. """
         header = [_("user")]  # , u"entity"]
         question_order = ["user"]  # , u"entity" ]
         for question in self.survey.questions.all():

@@ -122,7 +122,7 @@ class ResponseForm(models.ModelForm):
             return self.categories + extras
 
     def _get_preexisting_response(self):
-        """ Recover a pre-existing response in database.
+        """Recover a pre-existing response in database.
 
         The user must be logged. Will store the response retrieved in an attribute
         to avoid multiple db calls.
@@ -144,7 +144,7 @@ class ResponseForm(models.ModelForm):
         return self.response
 
     def _get_preexisting_answers(self):
-        """ Recover pre-existing answers in database.
+        """Recover pre-existing answers in database.
 
         The user must be logged. A Response containing the Answer must exists.
         Will create an attribute containing the answers retrieved to avoid multiple
@@ -166,7 +166,7 @@ class ResponseForm(models.ModelForm):
         return self.answers
 
     def _get_preexisting_answer(self, question):
-        """ Recover a pre-existing answer in database.
+        """Recover a pre-existing answer in database.
 
         The user must be logged. A Response containing the Answer must exists.
 
@@ -177,11 +177,11 @@ class ResponseForm(models.ModelForm):
         return answers.get(question.id, None)
 
     def get_question_initial(self, question, data):
-        """ Get the initial value that we should use in the Form
+        """Get the initial value that we should use in the Form
 
         :param Question question: The question
         :param dict data: Value from a POST request.
-        :rtype: String or None  """
+        :rtype: String or None"""
         initial = None
         answer = self._get_preexisting_answer(question)
         if answer:
@@ -208,10 +208,10 @@ class ResponseForm(models.ModelForm):
         return initial
 
     def get_question_widget(self, question):
-        """ Return the widget we should use for a question.
+        """Return the widget we should use for a question.
 
         :param Question question: The question
-        :rtype: django.forms.widget or None """
+        :rtype: django.forms.widget or None"""
         try:
             return self.WIDGETS[question.type]
         except KeyError:
@@ -219,10 +219,10 @@ class ResponseForm(models.ModelForm):
 
     @staticmethod
     def get_question_choices(question):
-        """ Return the choices we should use for a question.
+        """Return the choices we should use for a question.
 
         :param Question question: The question
-        :rtype: List of String or None """
+        :rtype: List of String or None"""
         qchoices = None
         if question.type not in [Question.TEXT, Question.SHORT_TEXT, Question.INTEGER, Question.FLOAT, Question.DATE]:
             qchoices = question.get_choices()
@@ -233,12 +233,12 @@ class ResponseForm(models.ModelForm):
         return qchoices
 
     def get_question_field(self, question, **kwargs):
-        """ Return the field we should use in our form.
+        """Return the field we should use in our form.
 
         :param Question question: The question
         :param **kwargs: A dict of parameter properly initialized in
             add_question.
-        :rtype: django.forms.fields """
+        :rtype: django.forms.fields"""
         # logging.debug("Args passed to field %s", kwargs)
         try:
             return self.FIELDS[question.type](**kwargs)
@@ -246,10 +246,10 @@ class ResponseForm(models.ModelForm):
             return forms.ChoiceField(**kwargs)
 
     def add_question(self, question, data):
-        """ Add a question to the form.
+        """Add a question to the form.
 
         :param Question question: The question to add.
-        :param dict data: The pre-existing values from a post request. """
+        :param dict data: The pre-existing values from a post request."""
         kwargs = {"label": question.text, "required": question.required}
         initial = self.get_question_initial(question, data)
         if initial:
@@ -296,7 +296,7 @@ class ResponseForm(models.ModelForm):
     def save(self, commit=True):
         """ Save the response object """
         # Recover an existing response from the database if any
-        #  There is only one response by logged user.
+        #  There is only one response by logged user.
         response = self._get_preexisting_response()
         if not self.survey.editable_answers and response is not None:
             return None

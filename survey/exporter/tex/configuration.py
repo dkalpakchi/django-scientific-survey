@@ -41,9 +41,9 @@ class Configuration:
         return valid_survey_names
 
     def check_survey_exists(self, survey_name):
-        """ Check if the survey name exists.
+        """Check if the survey name exists.
 
-        :param String survey_name: The name of a survey. """
+        :param String survey_name: The name of a survey."""
         LOGGER.info("Checking that '%s' is an existing survey.", survey_name)
         if not isinstance(survey_name, str):
             msg = "Expecting a string for 'survey_name' and got a {} ".format(type(survey_name))
@@ -62,10 +62,10 @@ class Configuration:
         return self.get(survey_name=survey_name)
 
     def _init_from_file(self, filepath):
-        """ Return a configuration from a filepath.
+        """Return a configuration from a filepath.
 
         :param String filepath: The path of the yaml configuration file.
-        :rtype: Dict """
+        :rtype: Dict"""
         with open(filepath, "r", encoding="UTF-8") as f:
             configuration = yaml.load(f, Loader=yaml.FullLoader)
         for survey_name in list(configuration.keys()):
@@ -83,7 +83,7 @@ class Configuration:
             pass
 
     def recursive_update(self, dict_, update_dict):
-        """ Update a dict recursively. It permit to keep the default value by
+        """Update a dict recursively. It permit to keep the default value by
         default and to be able to replace them by dictionaries.
         """
         if dict_ is None:
@@ -114,7 +114,7 @@ class Configuration:
 
     @staticmethod
     def get_default_question_conf(conf):
-        """ A deepcopy of what we deem necessary in the question config.
+        """A deepcopy of what we deem necessary in the question config.
 
         We want to avoid copying everything in the conf. For example we do not
         need the document type in a question configuration.
@@ -128,12 +128,11 @@ class Configuration:
         }
 
     def get(self, key=None, survey_name=None, question_text=None):
-        """ Get a configuration file for a survey or a specific question.
+        """Get a configuration file for a survey or a specific question.
 
         :param String key: The key we want to get.
         :param String survey_name: The name of a specific survey.
-        :param String question_text: The text of a specific question.
-        :param String category_name """
+        :param String question_text: The text of a specific question."""
         # We create a new dictionary from a deepcopy of the default conf
         conf = copy.deepcopy(self._default["generic"])
         # We update it with the generic configuration of the user if it exists

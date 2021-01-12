@@ -1,4 +1,4 @@
-# This file containt default values for tex configuration
+# This file containt default values for tex configuration
 
 generic:
     document_class: article

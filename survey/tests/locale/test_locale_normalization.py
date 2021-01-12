@@ -1,8 +1,12 @@
+import logging
 import os
 import platform
 import subprocess
 import unittest
 from pathlib import Path
+
+from django import __version__ as django_version
+from django.conf import settings
 
 
 class TestLocaleNormalization(unittest.TestCase):
@@ -23,6 +27,11 @@ class TestLocaleNormalization(unittest.TestCase):
             "--ignore",
             "venv",
         ]
+        if django_version > "3.0":
+            for x in settings.LANGUAGES:
+                if x[0] != "en":
+                    makemessages_command += ["--locale", x[0]]
+            logging.warning("Command to launch for makemessages is : %s", " ".join(makemessages_command))
         number_of_language = len(os.listdir(self.LOCALE_PATH))
         subprocess.check_call(makemessages_command)
         git_diff_command = ["git", "diff", self.LOCALE_PATH]

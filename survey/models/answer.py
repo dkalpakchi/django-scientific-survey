@@ -42,9 +42,9 @@ class Answer(models.Model):
             return [None]
         if len(self.body) < 3 or self.body[0:3] != "[u'":
             return [self.body]
-        #  We do not use eval for security reason but it could work with :
-        #  eval(self.body)
-        #  It would permit to inject code into answer though.
+        # We do not use eval for security reason but it could work with :
+        # eval(self.body)
+        # It would permit to inject code into answer though.
         values = []
         raw_values = self.body.split("', u'")
         nb_values = len(raw_values)

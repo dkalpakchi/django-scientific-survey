@@ -17,10 +17,30 @@ THIS_DIRECTORY = path.abspath(path.dirname(__file__))
 with open(path.join(THIS_DIRECTORY, "README.md"), encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()
 
+DEPENDENCIES = [
+    "django>=2.2",
+    "django-bootstrap-form>=3.4",
+    "django-tastypie>=0.14.2",
+    "django-registration>=3.0",
+    "pytz>=2018.9",
+    "ordereddict>=1.1",
+    "pyyaml>=4.2b1",
+]
+SANKEY_DEPENDENCIES = ["pySankeyBeta~=1.2.2"]
+DEV_DEPENDENCIES = [
+    "django-rosetta",
+    "coverage",
+    "python-coveralls",
+    "coveralls",
+    "colorama",
+    "pylint",
+    "flake8",
+    "pre-commit",
+]
 
 setuptools.setup(
     name="django-survey-and-report",
-    version="1.3.23",
+    version="1.3.31",
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
@@ -49,27 +69,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3.8",
         "Framework :: Django",
     ],
-    install_requires=[
-        "django>=2.2",
-        "django-bootstrap-form>=3.4",
-        "django-tastypie>=0.14.2",  # API
-        "django-registration>=3.0",  # account logic, views and workflows
-        "pytz>=2018.9",
-        "ordereddict>=1.1",
-        "pyyaml>=4.2b1",
-        "pySankeyBeta~=1.2.2",
-        "django-tinymce>=3.0",
-    ],
-    extras_require={
-        "dev": [
-            "django-rosetta",
-            "coverage",
-            "python-coveralls",
-            "coveralls",
-            "colorama",
-            "pylint",
-            "flake8",
-            "pre-commit",
-        ]
-    },
+    install_requires=DEPENDENCIES,
+    extras_require={"dev": SANKEY_DEPENDENCIES + DEV_DEPENDENCIES, "sankey": SANKEY_DEPENDENCIES},
 )

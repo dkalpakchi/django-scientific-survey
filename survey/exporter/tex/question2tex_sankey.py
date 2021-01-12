@@ -15,8 +15,8 @@ LOGGER = logging.getLogger(__name__)
 class Question2TexSankey(Question2Tex):
 
     """
-        This class permit to generate latex code directly from the Question
-        object.
+    This class permit to generate latex code directly from the Question
+    object.
     """
 
     TEX_SKELETON = """
@@ -46,7 +46,7 @@ class Question2TexSankey(Question2Tex):
         return caption
 
     def tex(self):
-        """ Return a tikz Sankey Diagram of two questions.
+        """Return a tikz Sankey Diagram of two questions.
 
         The question used during initialization will be left and down the other
         question will be right and up. Cardinality constraint used for the
@@ -55,7 +55,7 @@ class Question2TexSankey(Question2Tex):
         See this question https://tex.stackexchange.com/questions/40159/
         in order for it to work with your latex file.
 
-        :param Question other_question: the question we compare to. """
+        :param Question other_question: the question we compare to."""
         self.cardinality = self.question.sorted_answers_cardinality(
             self.min_cardinality,
             self.group_together,

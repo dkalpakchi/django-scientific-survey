@@ -86,7 +86,7 @@ Test survëy:
         radius: 3
 
     questions:
-        # 1
+        # 1
         Lorem ipsum dolor sit amët, <strong> consectetur </strong> adipiscing elit.:
             multiple_charts:
                 Polar pin:
@@ -114,7 +114,7 @@ Test survëy:
             chart:
                 type: survey.tests.exporter.tex.CustomQuestion2TexChild
 
-        # 5
+        # 5
         Ipsum dolor sit amët, consectetur <strong> adipiscing </strong> elit.:
             chart:
                 min_cardinality: 1
@@ -125,7 +125,7 @@ Test survëy:
                 before_number: "\\$"
                 sum: 3
 
-        # 6
+        # 6
         Dolor sit amët, consectetur<strong>  adipiscing</strong>  elit.:
             multiple_charts:
                 Sub Sub Section with radius=3 :

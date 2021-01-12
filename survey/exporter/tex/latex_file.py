@@ -33,9 +33,9 @@ class LatexFile:
 
     @property
     def header(self):
-        """ Return the header of a .tex file.
+        """Return the header of a .tex file.
 
-        :rtype: String """
+        :rtype: String"""
         header = "\\documentclass"
         if self.document_option:
             header += "[{}]".format(self.document_option)
@@ -48,9 +48,9 @@ class LatexFile:
 
     @property
     def footer(self):
-        """ Return the footer of a .tex file.
+        """Return the footer of a .tex file.
 
-        :rtype: String """
+        :rtype: String"""
         end = """
 \\end{document}
 """
@@ -65,7 +65,7 @@ class LatexFile:
 
     @property
     def document(self):
-        """ Return the full text of the LatexFile.
+        """Return the full text of the LatexFile.
 
         :rtype: String"""
         return "{}{}{}".format(self.header, self.text, self.footer)

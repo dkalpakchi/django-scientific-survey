@@ -20,8 +20,8 @@ except (ImportError, AttributeError):
 class Response(models.Model):
 
     """
-        A Response object is a collection of questions and answers with a
-        unique interview uuid.
+    A Response object is a collection of questions and answers with a
+    unique interview uuid.
     """
 
     created = models.DateTimeField(_("Creation date"), auto_now_add=True)

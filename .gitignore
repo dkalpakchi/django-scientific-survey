@@ -17,6 +17,7 @@ htmlcov/
 build/
 dist/
 .tox/
+.vscode/
 csv/short-survey.csv
 csv/test-management-survey.csv
 csv/test-survey.csv

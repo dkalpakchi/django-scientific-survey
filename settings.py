@@ -46,7 +46,7 @@ SURVEY_DEFAULT_PIE_COLOR = "red!50"
 
 CHOICES_SEPARATOR = ","
 
-LANGUAGE_CODE = "en-us"
+
 SITE_ID = 1
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -89,6 +89,7 @@ TEMPLATES = [
                 "django.template.context_processors.media",
                 "django.template.context_processors.static",
                 "django.template.context_processors.tz",
+                "django.template.context_processors.request",
                 "django.contrib.messages.context_processors.messages",
             ],
         },
@@ -124,7 +125,7 @@ INSTALLED_APPS = (
 )
 
 LOCALE_PATHS = (os.path.join(ROOT, "survey", "locale"),)
-LANGUAGE_CODE = "en"
+LANGUAGE_CODE = "en-us"
 LANGUAGES = (
     ("en", "english"),
     ("ru", "russian"),
@@ -133,6 +134,9 @@ LANGUAGES = (
     ("ja", "Japanese"),
     ("zh", "Chinese"),
     ("de", "German"),
+    ("id", "Indonesian"),
+    ("pt-br", "Brazilian Portuguese"),
+    ("pl", "Polish"),
 )
 
 LOGIN_REDIRECT_URL = "/"

@@ -72,8 +72,8 @@ class TestQuestion2TexChart(TestManagement):
             group_by_lettercase=None,
             cardinality=None,
         ):
-            """ Permit to have default options while defining specific options
-            explicitely. """
+            """Permit to have default options while defining specific options
+            explicitely."""
             if filter is None:
                 filter = {}
             if group_together is None:
@@ -91,7 +91,7 @@ class TestQuestion2TexChart(TestManagement):
             }
 
         def get_result(**options):
-            """ Return the result of get_caption using options.
+            """Return the result of get_caption using options.
             If cardinality is set we change the cardinality of the question."""
             q2c = Question2TexChart(**options)
             if options.get("cardinality") is not None:
@@ -99,7 +99,7 @@ class TestQuestion2TexChart(TestManagement):
             return q2c.get_caption()
 
         options = get_options(min_cardinality=2)
-        self.assertIn("2 respondant or more", get_result(**options))
+        self.assertIn("2 respondent or more", get_result(**options))
         options = get_options(filter=["Toto"])
         self.assertIn("excluding 'Toto' ", get_result(**options))
         options = get_options(filter=["Toto", "Titi"])

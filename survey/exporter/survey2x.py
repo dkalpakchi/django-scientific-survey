@@ -66,8 +66,8 @@ class Survey2X:
         return self.survey.latest_answer_date()
 
     def need_update(self):
-        """ Does a file need an update ?
-        If the file was generated before the last answer was given, it needs update. """
+        """Does a file need an update ?
+        If the file was generated before the last answer was given, it needs update."""
         latest_answer_date = self.latest_answer_date
         no_response_at_all = latest_answer_date is None
         if no_response_at_all:
@@ -87,7 +87,7 @@ class Survey2X:
         return not os.path.exists(self.filename)
 
     def __str__(self):
-        """ Return a string that will be written into a file.
+        """Return a string that will be written into a file.
 
         :rtype String:
         """

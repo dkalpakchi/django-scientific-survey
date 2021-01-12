@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-09 04:01+0000\n"
+"POT-Creation-Date: 2020-10-13 07:04+0000\n"
 "PO-Revision-Date: 2020-02-23 14:44+0000\n"
 "Last-Translator: b'  <>'\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,14 +27,14 @@ msgstr "fr"
 msgid "DEVELOPMENT django-Survey"
 msgstr "DÉVELOPPEMENT django-Survey"
 
-#: survey/actions.py:13
+#: survey/actions.py:14
 #, python-format
 msgid "%(count)d survey was successfully marked as published."
 msgid_plural "%(count)d surveys were successfully marked as published"
 msgstr[0] "%(count)d questionnaire a été publié avec succès."
 msgstr[1] "%(count)d questionnaires ont été publiés avec succès."
 
-#: survey/actions.py:20
+#: survey/actions.py:23
 msgid "Mark selected surveys as published"
 msgstr "Marquer le sondage comme publié"
 
@@ -42,11 +42,11 @@ msgstr "Marquer le sondage comme publié"
 msgid "Anonymous"
 msgstr "Anonyme"
 
-#: survey/exporter/csv/survey2csv.py:71
+#: survey/exporter/csv/survey2csv.py:68
 msgid "user"
 msgstr "Utilisateur"
 
-#: survey/exporter/csv/survey2csv.py:115
+#: survey/exporter/csv/survey2csv.py:112
 msgid "Export to CSV"
 msgstr "Export vers CSV"
 
@@ -56,8 +56,8 @@ msgstr "avec"
 
 #: survey/exporter/tex/question2tex.py:66
 #, python-format
-msgid "%(min_cardinality)d respondants or more"
-msgid_plural "%(min_cardinality)d respondant or more"
+msgid "%(min_cardinality)d respondents or more"
+msgid_plural "%(min_cardinality)d respondent or more"
 msgstr[0] "%(min_cardinality)d réponse ou plus"
 msgstr[1] "%(min_cardinality)d réponses ou plus"
 
@@ -80,16 +80,16 @@ msgstr "ou"
 msgid "Repartition of answers"
 msgstr "Répartition des réponses"
 
-#: survey/exporter/tex/question2tex_chart.py:72
+#: survey/exporter/tex/question2tex_chart.py:68
 msgid "Left blank"
 msgstr "Laissé vide"
 
-#: survey/exporter/tex/question2tex_chart.py:117
+#: survey/exporter/tex/question2tex_chart.py:113
 #: survey/exporter/tex/question2tex_sankey.py:40
 msgid "for the question"
 msgstr "pour la question"
 
-#: survey/exporter/tex/question2tex_chart.py:127
+#: survey/exporter/tex/question2tex_chart.py:123
 msgid "No answers for this question."
 msgstr "Aucune réponse pour cette question."
 
@@ -109,32 +109,38 @@ msgstr "mise en relation avec la question"
 msgid "right"
 msgstr "à droite"
 
-#: survey/exporter/tex/survey2tex.py:32
+#: survey/exporter/tex/survey2tex.py:39
 msgid "Cannot generate PDF, we need 'xelatex' to be installed."
 msgstr "Impossible de générer le PDF, 'xelatex' doit être installé."
 
-#: survey/exporter/tex/survey2tex.py:80
+#: survey/exporter/tex/survey2tex.py:44
+#, fuzzy
+#| msgid "Cannot generate PDF, we need 'xelatex' to be installed."
+msgid "Cannot generate PDF, we need 'pySankeyBeta' to be installed."
+msgstr "Impossible de générer le PDF, 'xelatex' doit être installé."
+
+#: survey/exporter/tex/survey2tex.py:94
 msgid "We could not render a chart because the type"
 msgstr "Nous n'avons pas pu générer un graphique car le type"
 
-#: survey/exporter/tex/survey2tex.py:83
+#: survey/exporter/tex/survey2tex.py:97
 msgid "is not a standard type nor the path to an importable valid Question2Tex child class. Choose between 'raw', 'sankey', 'pie', 'cloud', 'square', 'polar' or 'package.path.MyQuestion2TexCustomClass'"
 msgstr "n'est pas un type standard, ni le chemin d'une classe fille de Question2Tex importable. Choisissez entre 'raw', 'sankey', 'pie', 'cloud', 'square', 'polar' ou 'package.chemin.MaClasseQuestion2TexPerso'"
 
-#: survey/exporter/tex/survey2tex.py:157
+#: survey/exporter/tex/survey2tex.py:171
 msgid "No questions to display in this survey."
 msgstr "Aucune questions à montrer dans ce sondage."
 
-#: survey/exporter/tex/survey2tex.py:187
+#: survey/exporter/tex/survey2tex.py:201
 msgid "Cannot export multiple PDF, choose only one."
 msgstr "Impossible d'exporter plusieurs PDF,  choisissez en un seul."
 
-#: survey/exporter/tex/survey2tex.py:196
+#: survey/exporter/tex/survey2tex.py:210
 #, python-format
 msgid "Error during PDF generation: %s"
 msgstr "Erreur durant la génération du PDF: %s"
 
-#: survey/exporter/tex/survey2tex.py:203
+#: survey/exporter/tex/survey2tex.py:217
 msgid "Export to PDF"
 msgstr "Export vers PDF"
 

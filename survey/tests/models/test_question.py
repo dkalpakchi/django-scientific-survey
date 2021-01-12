@@ -189,8 +189,8 @@ class TestQuestion(BaseModelTest):
         )
 
     def test_answers_cardinality_linked_without_link(self):
-        """ When we want to link to another question and there is no link at
-        all, we still have a dict. """
+        """When we want to link to another question and there is no link at
+        all, we still have a dict."""
         survey = Survey.objects.create(
             name="name", is_published=True, need_logged_user=False, display_method=Survey.BY_QUESTION
         )

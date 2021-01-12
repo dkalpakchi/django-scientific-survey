@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-09 04:01+0000\n"
+"POT-Creation-Date: 2020-10-13 07:04+0000\n"
 "PO-Revision-Date: 2018-10-06 20:42+0000\n"
 "Last-Translator: Javier Ordóñez <>\n"
 "Language-Team: \n"
@@ -27,14 +27,14 @@ msgstr "es"
 msgid "DEVELOPMENT django-Survey"
 msgstr "DESARROLLO django-Survey"
 
-#: survey/actions.py:13
+#: survey/actions.py:14
 #, python-format
 msgid "%(count)d survey was successfully marked as published."
 msgid_plural "%(count)d surveys were successfully marked as published"
 msgstr[0] "encuesta %(count)d se marcó exitosamente como publicada."
 msgstr[1] "encuestas %(count)d se marcaron exitosamente como publicadas."
 
-#: survey/actions.py:20
+#: survey/actions.py:23
 msgid "Mark selected surveys as published"
 msgstr "Marca las encuestas seleccionadas como publicadas"
 
@@ -42,11 +42,11 @@ msgstr "Marca las encuestas seleccionadas como publicadas"
 msgid "Anonymous"
 msgstr "Anónimo"
 
-#: survey/exporter/csv/survey2csv.py:71
+#: survey/exporter/csv/survey2csv.py:68
 msgid "user"
 msgstr "usuario"
 
-#: survey/exporter/csv/survey2csv.py:115
+#: survey/exporter/csv/survey2csv.py:112
 msgid "Export to CSV"
 msgstr "Exportación al formato CSV"
 
@@ -58,8 +58,8 @@ msgstr "con"
 # Entrevistado reffers to all surveyed.
 #: survey/exporter/tex/question2tex.py:66
 #, python-format
-msgid "%(min_cardinality)d respondants or more"
-msgid_plural "%(min_cardinality)d respondant or more"
+msgid "%(min_cardinality)d respondents or more"
+msgid_plural "%(min_cardinality)d respondent or more"
 msgstr[0] "%(min_cardinality)d entrevistado o más"
 msgstr[1] "%(min_cardinality)d entrevistados o más."
 
@@ -82,16 +82,16 @@ msgstr "o"
 msgid "Repartition of answers"
 msgstr "Distribución de respuestas"
 
-#: survey/exporter/tex/question2tex_chart.py:72
+#: survey/exporter/tex/question2tex_chart.py:68
 msgid "Left blank"
 msgstr "Dejada en blanco"
 
-#: survey/exporter/tex/question2tex_chart.py:117
+#: survey/exporter/tex/question2tex_chart.py:113
 #: survey/exporter/tex/question2tex_sankey.py:40
 msgid "for the question"
 msgstr "para la pregunta"
 
-#: survey/exporter/tex/question2tex_chart.py:127
+#: survey/exporter/tex/question2tex_chart.py:123
 msgid "No answers for this question."
 msgstr "No hay respuestas para esta pregunta."
 
@@ -113,32 +113,36 @@ msgstr "en relación con la pregunta"
 msgid "right"
 msgstr "derecha"
 
-#: survey/exporter/tex/survey2tex.py:32
+#: survey/exporter/tex/survey2tex.py:39
 msgid "Cannot generate PDF, we need 'xelatex' to be installed."
 msgstr ""
 
-#: survey/exporter/tex/survey2tex.py:80
+#: survey/exporter/tex/survey2tex.py:44
+msgid "Cannot generate PDF, we need 'pySankeyBeta' to be installed."
+msgstr ""
+
+#: survey/exporter/tex/survey2tex.py:94
 msgid "We could not render a chart because the type"
 msgstr "no pudimos generar un gráfico porque el tipo"
 
-#: survey/exporter/tex/survey2tex.py:83
+#: survey/exporter/tex/survey2tex.py:97
 msgid "is not a standard type nor the path to an importable valid Question2Tex child class. Choose between 'raw', 'sankey', 'pie', 'cloud', 'square', 'polar' or 'package.path.MyQuestion2TexCustomClass'"
 msgstr "no es un tipo estándar ni ruta a una subclase importable válida de Question2Tex. Escoje entre 'raw', 'sankey', 'pie', 'cloud', 'square', 'polar' o 'package.path.MyQuestion2TexCustomClass'"
 
-#: survey/exporter/tex/survey2tex.py:157
+#: survey/exporter/tex/survey2tex.py:171
 msgid "No questions to display in this survey."
 msgstr "No hay preguntas para mostrar en esta encuesta."
 
-#: survey/exporter/tex/survey2tex.py:187
+#: survey/exporter/tex/survey2tex.py:201
 msgid "Cannot export multiple PDF, choose only one."
 msgstr "No se pueden exportar varios PDF, elija solo uno."
 
-#: survey/exporter/tex/survey2tex.py:196
+#: survey/exporter/tex/survey2tex.py:210
 #, python-format
 msgid "Error during PDF generation: %s"
 msgstr "Error durante la generación del PDF: %s"
 
-#: survey/exporter/tex/survey2tex.py:203
+#: survey/exporter/tex/survey2tex.py:217
 msgid "Export to PDF"
 msgstr "Exportación al formato PDF"
 

@@ -15,6 +15,7 @@ DEFAULT_SETTINGS = [
 def set_default_settings():
     try:
         from django.conf import settings
+
         from . import settings as app_settings
 
         for setting in dir(app_settings):

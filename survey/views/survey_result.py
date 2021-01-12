@@ -29,9 +29,9 @@ def serve_protected_result(request, survey):
 
 
 def serve_result_csv(request, primary_key):
-    """ ... only if the survey does not require login or the user is logged.
+    """... only if the survey does not require login or the user is logged.
 
-    :param int primary_key: The primary key of the survey. """
+    :param int primary_key: The primary key of the survey."""
     survey = get_object_or_404(Survey, pk=primary_key)
     if not survey.is_published:
         messages.error(request, "This survey has not been published")

@@ -9,7 +9,7 @@ disable=
     no-member,
     missing-docstring, # We don't want docstring everywhere
     C0330, # black handle this
-    too-few-public-methods, # More harmful than beneficial in django project
+    too-few-public-methods, # More harmful than beneficial in django project
     too-many-arguments,
 
 ignore=migrations

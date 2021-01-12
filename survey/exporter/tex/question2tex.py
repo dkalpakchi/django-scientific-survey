@@ -6,7 +6,7 @@ from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.utils.translation import ungettext
 
-from survey.models.question import Question
+from survey.models import Question
 
 LOGGER = logging.getLogger(__name__)
 
@@ -14,8 +14,8 @@ LOGGER = logging.getLogger(__name__)
 class Question2Tex:
 
     """
-        This class permit to generate latex code directly from the Question
-        object after overriding the tex() function.
+    This class permit to generate latex code directly from the Question
+    object after overriding the tex() function.
     """
 
     TEX_SKELETON = ""
@@ -39,7 +39,7 @@ class Question2Tex:
 
     @staticmethod
     def html2latex(html_text):
-        """ Convert some html text to something latex can compile.
+        """Convert some html text to something latex can compile.
 
         About the implementation : I added only what I used in my own questions
         here, because html2latex (https://pypi.python.org/pypi/html2latex/) is
@@ -47,7 +47,7 @@ class Question2Tex:
             (Jinja (378kB), Pillow (7.5MB), lxml (3.5MB), pyenchant (60kB),
              redis (62kB), selenium (2.6MB), ipython (2.8MB) nose (154kB)
 
-        :param String html_text: Some html text. """
+        :param String html_text: Some html text."""
         html_text = html_text.replace("<strong>", "\\textbf{")
         html_text = html_text.replace("</strong>", "}")
         html_text = html_text.replace("<code>", "$")
@@ -63,8 +63,8 @@ class Question2Tex:
             caption += "{} {} ".format(
                 _("with"),
                 ungettext(
-                    "%(min_cardinality)d respondants or more",
-                    "%(min_cardinality)d respondant or more",
+                    "%(min_cardinality)d respondents or more",
+                    "%(min_cardinality)d respondent or more",
                     self.min_cardinality,
                 )
                 % {"min_cardinality": self.min_cardinality},
