@@ -22,6 +22,7 @@ DEPENDENCIES = [
     "django-bootstrap-form>=3.4",
     "django-tastypie>=0.14.2",
     "django-registration>=3.0",
+    "django-nested-admin>=3.3.3",
     "pytz>=2018.9",
     "ordereddict>=1.1",
     "pyyaml>=4.2b1",

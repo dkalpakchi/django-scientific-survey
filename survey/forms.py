@@ -10,7 +10,7 @@ from django.forms import models
 from django.urls import reverse
 from django.utils.text import slugify
 
-from survey.models import Answer, Category, Question, Response, Survey
+from survey.models import Answer, AnswerGroup, Category, Question, Response, Survey
 from survey.signals import survey_completed
 from survey.widgets import ImageSelectWidget
 
@@ -20,21 +20,21 @@ LOGGER = logging.getLogger(__name__)
 class ResponseForm(models.ModelForm):
 
     FIELDS = {
-        Question.TEXT: forms.CharField,
-        Question.SHORT_TEXT: forms.CharField,
-        Question.SELECT_MULTIPLE: forms.MultipleChoiceField,
-        Question.INTEGER: forms.IntegerField,
-        Question.FLOAT: forms.FloatField,
-        Question.DATE: forms.DateField,
+        AnswerGroup.TEXT: forms.CharField,
+        AnswerGroup.SHORT_TEXT: forms.CharField,
+        AnswerGroup.SELECT_MULTIPLE: forms.MultipleChoiceField,
+        AnswerGroup.INTEGER: forms.IntegerField,
+        AnswerGroup.FLOAT: forms.FloatField,
+        AnswerGroup.DATE: forms.DateField,
     }
 
     WIDGETS = {
-        Question.TEXT: forms.Textarea,
-        Question.SHORT_TEXT: forms.TextInput,
-        Question.RADIO: forms.RadioSelect,
-        Question.SELECT: forms.Select,
-        Question.SELECT_IMAGE: ImageSelectWidget,
-        Question.SELECT_MULTIPLE: forms.CheckboxSelectMultiple,
+        AnswerGroup.TEXT: forms.Textarea,
+        AnswerGroup.SHORT_TEXT: forms.TextInput,
+        AnswerGroup.RADIO: forms.RadioSelect,
+        AnswerGroup.SELECT: forms.Select,
+        AnswerGroup.SELECT_IMAGE: ImageSelectWidget,
+        AnswerGroup.SELECT_MULTIPLE: forms.CheckboxSelectMultiple,
     }
 
     class Meta:
@@ -159,13 +159,17 @@ class ResponseForm(models.ModelForm):
             self.answers = None
         try:
             answers = Answer.objects.filter(response=response).prefetch_related("question")
-            self.answers = {answer.question.id: answer for answer in answers.all()}
+            self.answers = {}
+            for answer in answers.all():
+                if answer.question.id not in self.answers:
+                    self.answers[answer.question.id] = {}
+                self.answers[answer.question.id][answer.answer_group.id] = answer
         except Answer.DoesNotExist:
             self.answers = None
 
         return self.answers
 
-    def _get_preexisting_answer(self, question):
+    def _get_preexisting_answer(self, question, answer_group):
         """Recover a pre-existing answer in database.
 
         The user must be logged. A Response containing the Answer must exists.
@@ -174,7 +178,8 @@ class ResponseForm(models.ModelForm):
         response.
         :rtype: Answer or None"""
         answers = self._get_preexisting_answers()
-        return answers.get(question.id, None)
+        qanswers = answers.get(question.id, {})
+        return qanswers.get(answer_group.id) if answer_group else qanswers
 
     def get_question_initial(self, question, data):
         """Get the initial value that we should use in the Form
@@ -183,24 +188,26 @@ class ResponseForm(models.ModelForm):
         :param dict data: Value from a POST request.
         :rtype: String or None"""
         initial = None
-        answer = self._get_preexisting_answer(question)
-        if answer:
-            # Initialize the field with values from the database if any
-            if question.type == Question.SELECT_MULTIPLE:
-                initial = []
-                if answer.body == "[]":
-                    pass
-                elif "[" in answer.body and "]" in answer.body:
-                    initial = []
-                    unformated_choices = answer.body[1:-1].strip()
-                    for unformated_choice in unformated_choices.split(settings.CHOICES_SEPARATOR):
-                        choice = unformated_choice.split("'")[1]
-                        initial.append(slugify(choice))
-                else:
-                    # Only one element
-                    initial.append(slugify(answer.body))
-            else:
-                initial = answer.body
+        answers = self._get_preexisting_answer(question, None)
+        if answers:
+            for q_id, answer_groups in answers.items():
+                for ag_id, answer in answer_groups.items():
+                    # Initialize the field with values from the database if any
+                    if answer.answer_group.type == AnswerGroup.SELECT_MULTIPLE:
+                        initial = []
+                        if answer.body == "[]":
+                            pass
+                        elif "[" in answer.body and "]" in answer.body:
+                            initial = []
+                            unformated_choices = answer.body[1:-1].strip()
+                            for unformated_choice in unformated_choices.split(settings.CHOICES_SEPARATOR):
+                                choice = unformated_choice.split("'")[1]
+                                initial.append(slugify(choice))
+                        else:
+                            # Only one element
+                            initial.append(slugify(answer.body))
+                    else:
+                        initial = answer.body
         if data:
             # Initialize the field field from a POST request, if any.
             # Replace values from the database
@@ -213,7 +220,7 @@ class ResponseForm(models.ModelForm):
         :param Question question: The question
         :rtype: django.forms.widget or None"""
         try:
-            return self.WIDGETS[question.type]
+            return {ag.pk: self.WIDGETS[ag.type] for ag in question.answer_groups.all()}
         except KeyError:
             return None
 
@@ -223,16 +230,24 @@ class ResponseForm(models.ModelForm):
 
         :param Question question: The question
         :rtype: List of String or None"""
-        qchoices = None
-        if question.type not in [Question.TEXT, Question.SHORT_TEXT, Question.INTEGER, Question.FLOAT, Question.DATE]:
-            qchoices = question.get_choices()
-            # add an empty option at the top so that the user has to explicitly
-            # select one of the options
-            if question.type in [Question.SELECT, Question.SELECT_IMAGE]:
-                qchoices = tuple([("", "-------------")]) + qchoices
-        return qchoices
+        qchoices = {}
+        for ag in question.answer_groups.all():
+            if ag.type not in [
+                AnswerGroup.TEXT,
+                AnswerGroup.SHORT_TEXT,
+                AnswerGroup.INTEGER,
+                AnswerGroup.FLOAT,
+                AnswerGroup.DATE,
+            ]:
+                choices = ag.get_choices()
+                # add an empty option at the top so that the user has to explicitly
+                # select one of the options
+                if ag.type in [AnswerGroup.SELECT, AnswerGroup.SELECT_IMAGE]:
+                    choices = tuple([("", "-------------")]) + choices
+                qchoices[ag.pk] = choices
+        return qchoices or None
 
-    def get_question_field(self, question, **kwargs):
+    def get_question_fields(self, question, **kwargs):
         """Return the field we should use in our form.
 
         :param Question question: The question
@@ -240,17 +255,25 @@ class ResponseForm(models.ModelForm):
             add_question.
         :rtype: django.forms.fields"""
         # logging.debug("Args passed to field %s", kwargs)
-        try:
-            return self.FIELDS[question.type](**kwargs)
-        except KeyError:
-            return forms.ChoiceField(**kwargs)
+
+        fields = []
+        for ag in question.answer_groups.all():
+            fkw = dict(kwargs)
+            fkw["choices"] = fkw["choices"][ag.pk]
+            fkw["widget"] = fkw["widget"][ag.pk]
+            fkw["label"] = ag.name
+            try:
+                fields.append((ag, self.FIELDS[ag.type](**fkw)))
+            except KeyError:
+                fields.append((ag, forms.ChoiceField(**fkw)))
+        return fields
 
     def add_question(self, question, data):
         """Add a question to the form.
 
         :param Question question: The question to add.
         :param dict data: The pre-existing values from a post request."""
-        kwargs = {"label": question.text, "required": question.required}
+        kwargs = {"required": question.required}
         initial = self.get_question_initial(question, data)
         if initial:
             kwargs["initial"] = initial
@@ -260,13 +283,15 @@ class ResponseForm(models.ModelForm):
         widget = self.get_question_widget(question)
         if widget:
             kwargs["widget"] = widget
-        field = self.get_question_field(question, **kwargs)
-        field.widget.attrs["category"] = question.category.name if question.category else ""
-
-        if question.type == Question.DATE:
-            field.widget.attrs["class"] = "date"
+        fields = self.get_question_fields(question, **kwargs)
+        for ag, field in fields:
+            field.widget.attrs["category"] = question.category.name if question.category else ""
+            if ag.type == AnswerGroup.DATE:
+                field.widget.attrs["class"] = "date"
         # logging.debug("Field for %s : %s", question, field.__dict__)
-        self.fields["question_%d" % question.pk] = field
+
+        for ag, f in fields:
+            self.fields["question_{}_{}".format(question.pk, ag.pk)] = f
 
     def has_next_step(self):
         if not self.survey.is_all_in_one_page():
@@ -317,19 +342,39 @@ class ResponseForm(models.ModelForm):
                 # warning: this way of extracting the id is very fragile and
                 # entirely dependent on the way the question_id is encoded in
                 # the field name in the __init__ method of this form class.
-                q_id = int(field_name.split("_")[1])
+                parts = field_name.split("_")
+                q_id = int(parts[1])
+                ag_id = int(parts[2])
                 question = Question.objects.get(pk=q_id)
-                answer = self._get_preexisting_answer(question)
+                answer_group = AnswerGroup.objects.get(pk=ag_id)
+                answer = self._get_preexisting_answer(question, answer_group)
                 if answer is None:
-                    answer = Answer(question=question)
-                if question.type == Question.SELECT_IMAGE:
+                    answer = Answer(question=question, answer_group=answer_group)
+                if answer_group.type == AnswerGroup.SELECT_IMAGE:
                     value, img_src = field_value.split(":", 1)
                     # TODO Handling of SELECT IMAGE
-                    LOGGER.debug("Question.SELECT_IMAGE not implemented, please use : %s and %s", value, img_src)
+                    LOGGER.debug("AnswerGroup.SELECT_IMAGE not implemented, please use : %s and %s", value, img_src)
                 answer.body = field_value
                 data["responses"].append((answer.question.id, answer.body))
-                LOGGER.debug("Creating answer for question %d of type %s : %s", q_id, answer.question.type, field_value)
+                LOGGER.debug("Creating answer for question %d of type %s : %s", q_id, answer_group.type, field_value)
                 answer.response = response
                 answer.save()
         survey_completed.send(sender=Response, instance=response, data=data)
         return response
+
+    def __getitem__(self, name):
+        """Return a BoundField with the given name."""
+        try:
+            field = self.fields[name]
+        except KeyError:
+            raise KeyError(
+                "Key '%s' not found in '%s'. Choices are: %s."
+                % (
+                    name,
+                    self.__class__.__name__,
+                    ", ".join(sorted(self.fields)),
+                )
+            )
+        if name not in self._bound_fields_cache:
+            self._bound_fields_cache[name] = field.get_bound_field(self, name)
+        return self._bound_fields_cache[name]

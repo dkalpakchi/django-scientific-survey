@@ -122,6 +122,7 @@ INSTALLED_APPS = (
     "bootstrapform",
     "rosetta",
     "tinymce",
+    "nested_admin",
 )
 
 LOCALE_PATHS = (os.path.join(ROOT, "survey", "locale"),)

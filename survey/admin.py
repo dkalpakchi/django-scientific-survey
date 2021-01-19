@@ -1,16 +1,23 @@
 # -*- coding: utf-8 -*-
 
+import nested_admin
 from django.contrib import admin
 
 from survey.actions import make_published
 from survey.exporter.csv import Survey2Csv
 from survey.exporter.tex import Survey2Tex
-from survey.models import Answer, Category, Question, Response, Survey
+from survey.models import Answer, AnswerGroup, Category, Question, Response, Survey
 
 
-class QuestionInline(admin.StackedInline):
+class AnswerGroupInline(nested_admin.NestedStackedInline):
+    model = AnswerGroup
+    extra = 0
+
+
+class QuestionInline(nested_admin.NestedStackedInline):
     model = Question
     ordering = ("order", "category")
+    inlines = [AnswerGroupInline]
     extra = 1
 
     def get_formset(self, request, survey_obj, *args, **kwargs):
@@ -20,12 +27,12 @@ class QuestionInline(admin.StackedInline):
         return formset
 
 
-class CategoryInline(admin.TabularInline):
+class CategoryInline(nested_admin.NestedTabularInline):
     model = Category
     extra = 0
 
 
-class SurveyAdmin(admin.ModelAdmin):
+class SurveyAdmin(nested_admin.NestedModelAdmin):
     list_display = ("name", "is_published", "need_logged_user", "template")
     list_filter = ("is_published", "need_logged_user")
     inlines = [CategoryInline, QuestionInline]
@@ -33,8 +40,8 @@ class SurveyAdmin(admin.ModelAdmin):
 
 
 class AnswerBaseInline(admin.StackedInline):
-    fields = ("question", "body")
-    readonly_fields = ("question",)
+    fields = ("question", "answer_group", "body")
+    readonly_fields = ("question", "answer_group")
     extra = 0
     model = Answer
 

@@ -3,7 +3,7 @@
 from django.conf.urls import url
 
 from survey.views import ConfirmView, IndexView, SurveyCompleted, SurveyDetail
-from survey.views.import_view import import_from_csv
+from survey.views.import_view import import_from_json
 from survey.views.survey_result import serve_result_csv
 
 urlpatterns = [
@@ -13,5 +13,5 @@ urlpatterns = [
     url(r"^(?P<id>\d+)/completed/", SurveyCompleted.as_view(), name="survey-completed"),
     url(r"^(?P<id>\d+)-(?P<step>\d+)-(?P<seed>\d+)/", SurveyDetail.as_view(), name="survey-detail-step"),
     url(r"^confirm/(?P<uuid>\w+)/", ConfirmView.as_view(), name="survey-confirmation"),
-    url(r"^import/csv", import_from_csv, name="survey-import-from-csv"),
+    url(r"^import/json", import_from_json, name="survey-import-from-json"),
 ]

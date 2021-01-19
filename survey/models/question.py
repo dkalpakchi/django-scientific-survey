@@ -54,29 +54,6 @@ class SortAnswer:
 
 
 class Question(models.Model):
-
-    TEXT = "text"
-    SHORT_TEXT = "short-text"
-    RADIO = "radio"
-    SELECT = "select"
-    SELECT_IMAGE = "select_image"
-    SELECT_MULTIPLE = "select-multiple"
-    INTEGER = "integer"
-    FLOAT = "float"
-    DATE = "date"
-
-    QUESTION_TYPES = (
-        (TEXT, _("text (multiple line)")),
-        (SHORT_TEXT, _("short text (one line)")),
-        (RADIO, _("radio")),
-        (SELECT, _("select")),
-        (SELECT_MULTIPLE, _("Select Multiple")),
-        (SELECT_IMAGE, _("Select Image")),
-        (INTEGER, _("integer")),
-        (FLOAT, _("float")),
-        (DATE, _("date")),
-    )
-
     text = models.TextField(_("Text"))
     order = models.IntegerField(_("Order"), blank=True, null=True, help_text=ORDER_HELP_TEXT)
     required = models.BooleanField(_("Required"))
@@ -84,29 +61,11 @@ class Question(models.Model):
         Category, on_delete=models.SET_NULL, verbose_name=_("Category"), blank=True, null=True, related_name="questions"
     )
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name=_("Survey"), related_name="questions")
-    type = models.CharField(_("Type"), max_length=200, choices=QUESTION_TYPES, default=TEXT)
-    choices = models.TextField(_("Choices"), blank=True, null=True, help_text=CHOICES_HELP_TEXT)
 
     class Meta:
         verbose_name = _("question")
         verbose_name_plural = _("questions")
         ordering = ("survey", "order")
-
-    def save(self, *args, **kwargs):
-        if self.type in [Question.RADIO, Question.SELECT, Question.SELECT_MULTIPLE]:
-            validate_choices(self.choices)
-        super(Question, self).save(*args, **kwargs)
-
-    def get_clean_choices(self):
-        """ Return split and stripped list of choices with no null values. """
-        if self.choices is None:
-            return []
-        choices_list = []
-        for choice in self.choices.split(settings.CHOICES_SEPARATOR):
-            choice = choice.strip()
-            if choice:
-                choices_list.append(choice)
-        return choices_list
 
     @property
     def answers_as_text(self):
@@ -374,6 +333,59 @@ class Question(models.Model):
             if other_value not in filter + standardized_filter:
                 self._cardinality_plus_answer(cardinality, value, other_value)
 
+    def __str__(self):
+        msg = "Question '{}' ".format(self.text)
+        if self.required:
+            msg += "(*) "
+        return msg
+
+
+class AnswerGroup(models.Model):
+    TEXT = "text"
+    SHORT_TEXT = "short-text"
+    RADIO = "radio"
+    SELECT = "select"
+    SELECT_IMAGE = "select_image"
+    SELECT_MULTIPLE = "select-multiple"
+    INTEGER = "integer"
+    FLOAT = "float"
+    DATE = "date"
+
+    QUESTION_TYPES = (
+        (TEXT, _("text (multiple line)")),
+        (SHORT_TEXT, _("short text (one line)")),
+        (RADIO, _("radio")),
+        (SELECT, _("select")),
+        (SELECT_MULTIPLE, _("Select Multiple")),
+        (SELECT_IMAGE, _("Select Image")),
+        (INTEGER, _("integer")),
+        (FLOAT, _("float")),
+        (DATE, _("date")),
+    )
+
+    type = models.CharField(_("Type"), max_length=200, choices=QUESTION_TYPES, default=TEXT)
+    choices = models.TextField(_("Choices"), blank=True, null=True, help_text=CHOICES_HELP_TEXT)
+    question = models.ForeignKey(
+        Question, on_delete=models.CASCADE, verbose_name=_("Answer group"), related_name="answer_groups"
+    )
+    name = models.CharField(_("Name"), blank=True, max_length=300, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.type in [AnswerGroup.RADIO, AnswerGroup.SELECT, AnswerGroup.SELECT_MULTIPLE]:
+            validate_choices(self.choices)
+        super(AnswerGroup, self).save(*args, **kwargs)
+
+    def get_clean_choices(self):
+        """ Return split and stripped list of choices with no null values. """
+        if self.choices is None:
+            return []
+        choices_list = []
+        for choice in self.choices.split(settings.CHOICES_SEPARATOR):
+            choice = choice.strip()
+            if choice:
+                choices_list.append(choice)
+        return choices_list
+
     def get_choices(self):
         """
         Parse the choices field and return a tuple formatted appropriately
@@ -386,8 +398,4 @@ class Question(models.Model):
         return choices_tuple
 
     def __str__(self):
-        msg = "Question '{}' ".format(self.text)
-        if self.required:
-            msg += "(*) "
-        msg += "{}".format(self.get_clean_choices())
-        return msg
+        return "{}: {}".format(self.name, self.get_clean_choices())

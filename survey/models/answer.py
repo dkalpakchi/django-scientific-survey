@@ -12,14 +12,16 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from .question import Question
+from .question import AnswerGroup, Question
 from .response import Response
 
 LOGGER = logging.getLogger(__name__)
 
 
 class Answer(models.Model):
-
+    answer_group = models.ForeignKey(
+        AnswerGroup, on_delete=models.CASCADE, verbose_name=_("Answer group"), related_name="answers"
+    )
     question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name=_("Question"), related_name="answers")
     response = models.ForeignKey(Response, on_delete=models.CASCADE, verbose_name=_("Response"), related_name="answers")
     created = models.DateTimeField(_("Creation date"), auto_now_add=True)
@@ -74,4 +76,6 @@ class Answer(models.Model):
                     raise ValidationError(msg)
 
     def __str__(self):
-        return "{} to '{}' : '{}'".format(self.__class__.__name__, self.question, self.body)
+        return "{} to {} for an answer group '{}' -> {}".format(
+            self.__class__.__name__, self.question, str(self.answer_group), self.body
+        )

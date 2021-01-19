@@ -27,6 +27,13 @@ def get_by_key(dictionary, key):
 register.filter("get_by_key", get_by_key)
 
 
+def items(dictionary):
+    return dictionary.items()
+
+
+register.filter("items", items)
+
+
 class CounterNode(template.Node):
     def __init__(self):
         self.count = 0
