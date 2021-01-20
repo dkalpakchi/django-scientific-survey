@@ -69,6 +69,8 @@ class ResponseForm(models.ModelForm):
         self.response = False
         self.answers = False
 
+        self.answer_groups = {}
+
         self._get_preexisting_response()
         if self.response:
             self.random_seed = self.response.random_seed
@@ -187,27 +189,26 @@ class ResponseForm(models.ModelForm):
         :param Question question: The question
         :param dict data: Value from a POST request.
         :rtype: String or None"""
-        initial = None
+        initial = {}
         answers = self._get_preexisting_answer(question, None)
         if answers:
-            for q_id, answer_groups in answers.items():
-                for ag_id, answer in answer_groups.items():
-                    # Initialize the field with values from the database if any
-                    if answer.answer_group.type == AnswerGroup.SELECT_MULTIPLE:
-                        initial = []
-                        if answer.body == "[]":
-                            pass
-                        elif "[" in answer.body and "]" in answer.body:
-                            initial = []
-                            unformated_choices = answer.body[1:-1].strip()
-                            for unformated_choice in unformated_choices.split(settings.CHOICES_SEPARATOR):
-                                choice = unformated_choice.split("'")[1]
-                                initial.append(slugify(choice))
-                        else:
-                            # Only one element
-                            initial.append(slugify(answer.body))
+            for ag_id, answer in answers.items():
+                # Initialize the field with values from the database if any
+                if answer.answer_group.type == AnswerGroup.SELECT_MULTIPLE:
+                    initial[ag_id] = []
+                    if answer.body == "[]":
+                        pass
+                    elif "[" in answer.body and "]" in answer.body:
+                        initial[ag_id] = []
+                        unformated_choices = answer.body[1:-1].strip()
+                        for unformated_choice in unformated_choices.split(settings.CHOICES_SEPARATOR):
+                            choice = unformated_choice.split("'")[1]
+                            initial[ag_id].append(slugify(choice))
                     else:
-                        initial = answer.body
+                        # Only one element
+                        initial[ag_id].append(slugify(answer.body))
+                else:
+                    initial[ag_id] = answer.body
         if data:
             # Initialize the field field from a POST request, if any.
             # Replace values from the database
@@ -259,6 +260,7 @@ class ResponseForm(models.ModelForm):
         fields = []
         for ag in question.answer_groups.all():
             fkw = dict(kwargs)
+            fkw["initial"] = fkw["initial"][ag.pk]
             fkw["choices"] = fkw["choices"][ag.pk]
             fkw["widget"] = fkw["widget"][ag.pk]
             fkw["label"] = ag.name
@@ -291,7 +293,12 @@ class ResponseForm(models.ModelForm):
         # logging.debug("Field for %s : %s", question, field.__dict__)
 
         for ag, f in fields:
-            self.fields["question_{}_{}".format(question.pk, ag.pk)] = f
+            idf = "question_{}_{}".format(question.pk, ag.pk)
+            idq = "question_{}".format(question.pk)
+            self.fields[idf] = f
+            if idq not in self.answer_groups:
+                self.answer_groups[idq] = {"text": question.text, "fields": []}
+            self.answer_groups[idq]["fields"].append(idf)
 
     def has_next_step(self):
         if not self.survey.is_all_in_one_page():
@@ -362,19 +369,7 @@ class ResponseForm(models.ModelForm):
         survey_completed.send(sender=Response, instance=response, data=data)
         return response
 
-    def __getitem__(self, name):
-        """Return a BoundField with the given name."""
-        try:
-            field = self.fields[name]
-        except KeyError:
-            raise KeyError(
-                "Key '%s' not found in '%s'. Choices are: %s."
-                % (
-                    name,
-                    self.__class__.__name__,
-                    ", ".join(sorted(self.fields)),
-                )
-            )
-        if name not in self._bound_fields_cache:
-            self._bound_fields_cache[name] = field.get_bound_field(self, name)
-        return self._bound_fields_cache[name]
+    @property
+    def groups_by_question(self):
+        print([(v["text"], [self[k] for k in v["fields"]]) for v in self.answer_groups.values()])
+        return [(v["text"], [self[k] for k in v["fields"]]) for v in self.answer_groups.values()]
