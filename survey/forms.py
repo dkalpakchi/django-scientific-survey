@@ -260,9 +260,12 @@ class ResponseForm(models.ModelForm):
         fields = []
         for ag in question.answer_groups.all():
             fkw = dict(kwargs)
-            fkw["initial"] = fkw["initial"][ag.pk]
-            fkw["choices"] = fkw["choices"][ag.pk]
-            fkw["widget"] = fkw["widget"][ag.pk]
+            if "initial" in fkw:
+                fkw["initial"] = fkw["initial"][ag.pk]
+            if "choices" in fkw:
+                fkw["choices"] = fkw["choices"][ag.pk]
+            if "widget" in fkw:
+                fkw["widget"] = fkw["widget"][ag.pk]
             fkw["label"] = ag.name
             try:
                 fields.append((ag, self.FIELDS[ag.type](**fkw)))
