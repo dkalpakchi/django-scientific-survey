@@ -21,15 +21,17 @@ class Survey2Json(Survey2X):
 
             user_answers["responses"] = defaultdict(list)
             for answer in response.answers.all():
+                extra, body = answer.question.extra, answer.body
                 try:
-                    extra = json.loads(answer.question.extra.replace("'", '"'))
-                except json.JSONDecodeError:
-                    extra = answer.question.extra
+                    extra = json.loads(extra.replace("'", '"'))
+                except (json.JSONDecodeError, AttributeError):
+                    pass
 
                 try:
-                    body = json.loads(answer.body.replace("'", '"'))
-                except json.JSONDecodeError:
-                    body = answer.body
+                    body = json.loads(body.replace("'", '"'))
+                except (json.JSONDecodeError, AttributeError):
+                    pass
+
                 user_answers["responses"][answer.question.text].append(
                     {"answer_group": answer.answer_group.name, "value": body, "extra": extra}
                 )
