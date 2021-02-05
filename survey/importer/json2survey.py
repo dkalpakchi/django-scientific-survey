@@ -13,6 +13,7 @@ class Json2Survey:
         for item in data["items"]:
             q = Question.objects.create(
                 text=item["question"],
+                extra=item.get("extra", {}),
                 required=item["required"],
                 order=item["order"] if item["order"] > 0 else None,
                 survey=s,

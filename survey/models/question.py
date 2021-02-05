@@ -61,6 +61,7 @@ class Question(models.Model):
         Category, on_delete=models.SET_NULL, verbose_name=_("Category"), blank=True, null=True, related_name="questions"
     )
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE, verbose_name=_("Survey"), related_name="questions")
+    extra = models.TextField(_("Extra"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("question")

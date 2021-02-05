@@ -21,8 +21,17 @@ class Survey2Json(Survey2X):
 
             user_answers["responses"] = defaultdict(list)
             for answer in response.answers.all():
+                try:
+                    extra = json.loads(answer.question.extra.replace("'", '"'))
+                except json.JSONDecodeError:
+                    extra = answer.question.extra
+
+                try:
+                    body = json.loads(answer.body.replace("'", '"'))
+                except json.JSONDecodeError:
+                    body = answer.body
                 user_answers["responses"][answer.question.text].append(
-                    {"answer_group": answer.answer_group.name, "value": answer.body}
+                    {"answer_group": answer.answer_group.name, "value": body, "extra": extra}
                 )
             res["responses"].append(user_answers)
         return json.dumps(res)
@@ -42,7 +51,7 @@ class Survey2Json(Survey2X):
                 response.write("{survey_name}\n".format(survey_name=survey.name))
                 response.write(survey_as_json)
                 response.write("\n\n")
-        response["Content-Disposition"] = "attachment; filename={}.csv".format(filename)
+        response["Content-Disposition"] = "attachment; filename={}.json".format(filename)
         return response
 
 
