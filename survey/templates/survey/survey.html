@@ -32,6 +32,7 @@
 	{% endif %}
 	    {% csrf_token %}
       <input type="hidden" name="seed" value="{{response_form.random_seed}}">
+      <input type="hidden" name="extra" value="{{response_form.extra}}">
         {% for category in categories %}
             <h3> {{category}} </h3>
             <p> {{category.description}} </p>

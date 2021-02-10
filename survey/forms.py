@@ -45,6 +45,7 @@ class ResponseForm(models.ModelForm):
         """ Expects a survey object to be passed in initially """
         self.survey = kwargs.pop("survey")
         self.user = kwargs.pop("user")
+        self.extra = kwargs.pop("extra", "")
         try:
             self.step = int(kwargs.pop("step"))
         except KeyError:
@@ -74,6 +75,7 @@ class ResponseForm(models.ModelForm):
         self._get_preexisting_response()
         if self.response:
             self.random_seed = self.response.random_seed
+            self.extra = self.response.extra
 
         self.add_questions(kwargs.get("data"))
 
@@ -301,7 +303,7 @@ class ResponseForm(models.ModelForm):
             self.fields[idf] = f
             if idq not in self.answer_groups:
                 self.answer_groups[idq] = {"text": question.text, "fields": []}
-            self.answer_groups[idq]["fields"].append(idf)
+            self.answer_groups[idq]["fields"].append((idf, ag.prefix, ag.suffix))
 
     def has_next_step(self):
         if not self.survey.is_all_in_one_page():
@@ -316,16 +318,21 @@ class ResponseForm(models.ModelForm):
                 "step": self.step + 1,
                 "seed": self.random_seed if self.randomize_questions else 0,
             }
-            return reverse("survey-detail-step", kwargs=context)
+            remainder = "?{}".format(self.extra) if self.extra else ""
+            return reverse("survey-detail-step", kwargs=context) + remainder
 
     def current_step_url(self):
-        return reverse(
-            "survey-detail-step",
-            kwargs={
-                "id": self.survey.id,
-                "step": self.step,
-                "seed": self.random_seed if self.randomize_questions else 0,
-            },
+        remainder = "?{}".format(self.extra) if self.extra else ""
+        return (
+            reverse(
+                "survey-detail-step",
+                kwargs={
+                    "id": self.survey.id,
+                    "step": self.step,
+                    "seed": self.random_seed if self.randomize_questions else 0,
+                },
+            )
+            + remainder
         )
 
     def save(self, commit=True):
@@ -342,6 +349,7 @@ class ResponseForm(models.ModelForm):
         response.random_seed = self.random_seed
         if self.user.is_authenticated:
             response.user = self.user
+        response.extra = self.extra
         response.save()
         # response "raw" data as dict (for signal)
         data = {"survey_id": response.survey.id, "interview_uuid": response.interview_uuid, "responses": []}
@@ -374,5 +382,5 @@ class ResponseForm(models.ModelForm):
 
     @property
     def groups_by_question(self):
-        print([(v["text"], [self[k] for k in v["fields"]]) for v in self.answer_groups.values()])
-        return [(v["text"], [self[k] for k in v["fields"]]) for v in self.answer_groups.values()]
+        print([(v["text"], [(self[k], p, s) for k, p, s in v["fields"]]) for v in self.answer_groups.values()])
+        return [(v["text"], [(self[k], p, s) for k, p, s in v["fields"]]) for v in self.answer_groups.values()]

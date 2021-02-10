@@ -15,3 +15,11 @@ label.link {
     color: #fff;
     border-radius: 15px;
 }
+
+.prefix {
+    margin-right: 1em;
+}
+
+.suffix {
+    margin-left: 1em;
+}

@@ -14,9 +14,9 @@ LOGGER = logging.getLogger(__name__)
 class SurveyDetail(View):
     @survey_available
     def get(self, request, *args, **kwargs):
-        survey = kwargs.get("survey")
-        step = kwargs.get("step", 0)
-        seed = kwargs.get("seed")
+        survey = kwargs.pop("survey", None)
+        step = kwargs.pop("step", 0)
+        seed = kwargs.pop("seed", None)
         if survey.template is not None and len(survey.template) > 4:
             template_name = survey.template
         else:
@@ -27,7 +27,7 @@ class SurveyDetail(View):
         if survey.need_logged_user and not request.user.is_authenticated:
             return redirect("%s?next=%s" % (settings.LOGIN_URL, request.path))
 
-        form = ResponseForm(survey=survey, user=request.user, step=step, seed=seed)
+        form = ResponseForm(survey=survey, user=request.user, step=step, seed=seed, extra=request.GET.urlencode())
         categories = form.current_categories()
 
         asset_context = {
@@ -51,7 +51,12 @@ class SurveyDetail(View):
             return redirect("%s?next=%s" % (settings.LOGIN_URL, request.path))
 
         form = ResponseForm(
-            request.POST, survey=survey, user=request.user, step=kwargs.get("step", 0), seed=request.POST.get("seed")
+            request.POST,
+            survey=survey,
+            user=request.user,
+            step=kwargs.get("step", 0),
+            seed=request.POST.get("seed"),
+            extra=request.POST.get("extra"),
         )
         categories = form.current_categories()
 
@@ -75,6 +80,12 @@ class SurveyDetail(View):
                 template_name = "survey/survey.html"
         return render(request, template_name, context)
 
+    def final_redirect(self, survey, response):
+        if survey.external_redirect:
+            return redirect(survey.external_redirect)
+        else:
+            return redirect("survey-confirmation", uuid=response.interview_uuid)
+
     def treat_valid_form(self, form, kwargs, request, survey):
         session_key = "survey_%s" % (kwargs["id"],)
         if session_key not in request.session:
@@ -95,7 +106,11 @@ class SurveyDetail(View):
                 request.session.modified = True
             else:
                 save_form = ResponseForm(
-                    request.session[session_key], survey=survey, user=request.user, seed=form.random_seed
+                    request.session[session_key],
+                    survey=survey,
+                    user=request.user,
+                    seed=form.random_seed,
+                    extra=form.extra,
                 )
                 if save_form.is_valid():
                     response = save_form.save()
@@ -115,4 +130,4 @@ class SurveyDetail(View):
                 del request.session["next"]
             return redirect(next_)
 
-        return redirect("survey-confirmation", uuid=response.interview_uuid)
+        self.final_redirect(survey, response)

@@ -6,7 +6,7 @@
             <tr>
                 <th>{{ forloop.counter}}. {{ question }}</th>
             </tr>
-            {% for form in fields %}
+            {% for form, prefix, suffix in fields %}
                 <tr class="{% if form.errors%} danger {% endif %}">
                 {% if form.field.widget.attrs.category == category.name or not form.field.widget.attrs.category %}
                     <td>
@@ -20,9 +20,11 @@
                         {% if form.field.widget.input_type == 'select' %}
                             <select name="{{form.name}}"{% if form.field.widget.attrs.disabled %} disabled{% endif %}>
                         {% endif %}
+                        {% if prefix %}<span class="prefix">{{prefix}}</span>{% endif %}
                         {% for field in form %}
-                            {{ field }} <br>
+                            {{ field }}
                         {% endfor%}
+                        {% if suffix %}<span class="suffix">{{suffix}}</span>{% endif %}
                         {% if form.field.widget.input_type == 'select' %}
                             </select>
                         {% endif %}

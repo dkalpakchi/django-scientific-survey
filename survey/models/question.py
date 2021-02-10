@@ -370,6 +370,8 @@ class AnswerGroup(models.Model):
         Question, on_delete=models.CASCADE, verbose_name=_("Answer group"), related_name="answer_groups"
     )
     name = models.CharField(_("Name"), blank=True, max_length=300, null=True)
+    prefix = models.CharField(_("Prefix"), blank=True, max_length=300, null=True)
+    suffix = models.CharField(_("Suffix"), blank=True, max_length=300, null=True)
 
     def save(self, *args, **kwargs):
         if self.type in [AnswerGroup.RADIO, AnswerGroup.SELECT, AnswerGroup.SELECT_MULTIPLE]:

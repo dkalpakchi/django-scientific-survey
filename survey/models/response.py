@@ -30,6 +30,7 @@ class Response(models.Model):
     user = models.ForeignKey(user_model, on_delete=models.SET_NULL, verbose_name=_("User"), null=True, blank=True)
     interview_uuid = models.CharField(_("Interview unique identifier"), max_length=36)
     random_seed = models.IntegerField(null=True, blank=True)
+    extra = models.TextField(_("Extra"), blank=True, null=True)
 
     class Meta:
         verbose_name = _("Set of answers to surveys")
