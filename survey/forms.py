@@ -247,7 +247,8 @@ class ResponseForm(models.ModelForm):
                 # select one of the options
                 if ag.type in [AnswerGroup.SELECT, AnswerGroup.SELECT_IMAGE]:
                     choices = tuple([("", "-------------")]) + choices
-                qchoices[ag.pk] = choices
+                if choices:
+                    qchoices[ag.pk] = choices
         return qchoices or None
 
     def get_question_fields(self, question, **kwargs):
@@ -260,14 +261,23 @@ class ResponseForm(models.ModelForm):
         # logging.debug("Args passed to field %s", kwargs)
 
         fields = []
-        for ag in question.answer_groups.all():
+        for ag in question.answer_groups.order_by("pk").all():
             fkw = dict(kwargs)
             if "initial" in fkw:
-                fkw["initial"] = fkw["initial"][ag.pk]
+                if ag.pk in fkw["initial"]:
+                    fkw["initial"] = fkw["initial"][ag.pk]
+                else:
+                    del fkw["initial"]
             if "choices" in fkw:
-                fkw["choices"] = fkw["choices"][ag.pk]
+                if ag.pk in fkw["choices"]:
+                    fkw["choices"] = fkw["choices"][ag.pk]
+                else:
+                    del fkw["choices"]
             if "widget" in fkw:
-                fkw["widget"] = fkw["widget"][ag.pk]
+                if ag.pk in fkw["widget"]:
+                    fkw["widget"] = fkw["widget"][ag.pk]
+                else:
+                    del fkw["widget"]
             fkw["label"] = ag.name
             try:
                 fields.append((ag, self.FIELDS[ag.type](**fkw)))
