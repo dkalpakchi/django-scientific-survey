@@ -20,5 +20,10 @@ class Json2Survey:
             )
             for aset in item["answer_sets"]:
                 AnswerGroup.objects.create(
-                    type=aset["type"], choices=",".join(map(str, aset["choices"])), question=q, name=aset["name"]
+                    type=aset["type"],
+                    choices=",".join(map(str, aset["choices"])),
+                    question=q,
+                    name=aset["name"],
+                    prefix=aset.get("prefix", ""),
+                    suffix=aset.get("suffix", ""),
                 )
