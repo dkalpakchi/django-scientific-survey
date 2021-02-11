@@ -130,4 +130,4 @@ class SurveyDetail(View):
                 del request.session["next"]
             return redirect(next_)
 
-        self.final_redirect(survey, response)
+        return self.final_redirect(survey, response)
