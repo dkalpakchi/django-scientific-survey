@@ -392,5 +392,4 @@ class ResponseForm(models.ModelForm):
 
     @property
     def groups_by_question(self):
-        print([(v["text"], [(self[k], p, s) for k, p, s in v["fields"]]) for v in self.answer_groups.values()])
         return [(v["text"], [(self[k], p, s) for k, p, s in v["fields"]]) for v in self.answer_groups.values()]
