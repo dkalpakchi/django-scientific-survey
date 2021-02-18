@@ -18,6 +18,8 @@ class Survey2Json(Survey2X):
             except AttributeError:
                 # 'NoneType' object has no attribute 'username'
                 user_answers["user"] = str(_("Anonymous"))
+            user_answers["extra"] = response.extra
+            user_answers["random_seed"] = response.random_seed
 
             user_answers["responses"] = defaultdict(list)
             for answer in response.answers.all():
