@@ -1,5 +1,7 @@
 import json
 
+from django.conf import settings
+
 from survey.models import AnswerGroup, Question, Survey
 
 
@@ -21,7 +23,7 @@ class Json2Survey:
             for aset in item["answer_sets"]:
                 AnswerGroup.objects.create(
                     type=aset["type"],
-                    choices=",".join(map(str, aset["choices"])),
+                    choices=settings.CHOICES_SEPARATOR.join(map(str, aset.get("choices", []))),
                     question=q,
                     name=aset["name"],
                     prefix=aset.get("prefix", ""),
