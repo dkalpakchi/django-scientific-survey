@@ -17,7 +17,7 @@ urlpatterns = [
     url(r"^$", home, name="home"),
     url("accounts/", include("django.contrib.auth.urls")),
     url(r"^rosetta/", include("rosetta.urls")),
-    url(r"^survey/", include("survey.urls")),
+    url(r"^survey/", include("scientific_survey.urls")),
     url(r"^admin/", admin.site.urls),
     url("tinymce/", include("tinymce.urls")),
 ]

@@ -1,0 +1,179 @@
+{
+    "name": "My Second Survey",
+    "items": [
+        {
+            "question": "Sentence: Does it work?<br>Paraphrase: Would it work?",
+            "required": true,
+            "extra": {
+                "model": "A"
+            },
+            "order": -1,
+            "answer_sets": [
+                {
+                    "type": "radio",
+                    "name": "Fluency",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "name": "Equivalence",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        },
+        {
+            "question": "Sentence: Could it work?<br>Paraphrase: Would it work?",
+            "required": true,
+            "extra": {
+                "model": "B"
+            },
+            "order": -1,
+            "answer_sets": [
+                {
+                    "type": "radio",
+                    "name": "Fluency",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "name": "Equivalence",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        },
+        {
+            "question": "Sentence: Why did you go shopping?<br>Paraphrase: Why did you go shipping?",
+            "required": true,
+            "extra": {
+                "model": "B"
+            },
+            "order": -1,
+            "answer_sets": [
+                {
+                    "type": "radio",
+                    "name": "Fluency",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "name": "Equivalence",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        },
+        {
+            "question": "Sentence: Was it cold for you today?<br>Paraphrase: Were you freezing?",
+            "required": true,
+            "extra": {
+                "model": "A"
+            },
+            "order": -1,
+            "answer_sets": [
+                {
+                    "type": "radio",
+                    "name": "Fluency",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "name": "Equivalence",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        },
+        {
+            "question": "Sentence: How high is the tallest mountain in Europe?<br>Paraphrase: How tall is the highest mountain in Europe?",
+            "required": true,
+            "extra": {
+                "model": "B"
+            },
+            "order": -1,
+            "answer_sets": [
+                {
+                    "type": "radio",
+                    "name": "Fluency",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "name": "Equivalence",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        },
+        {
+            "question": "Sentence: How sweet is sour cream?<br>Paraphrase: How sour is sweet cream?",
+            "required": true,
+            "extra": {
+                "model": "A"
+            },
+            "order": -1,
+            "answer_sets": [
+                {
+                    "type": "radio",
+                    "name": "Fluency",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "name": "Equivalence",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        }
+    ]
+}

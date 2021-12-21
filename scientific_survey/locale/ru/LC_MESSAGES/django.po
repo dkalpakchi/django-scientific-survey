@@ -1,0 +1,322 @@
+# django-survey-and-report's i18n file
+# This file is distributed under the MIT license.
+# Vlad M. <vladm.ru@gmail.com>, 2019.
+# Anton Melser <melser.anton@gmail.com>, 2020.
+# Dmytro Kalpakchi <dkalpackchi@gmail.com>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-21 18:28+0000\n"
+"PO-Revision-Date: 2021-12-21 18:36+0000\n"
+"Last-Translator:   <>\n"
+"Language-Team: \n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
+
+#: dev/templates/base.html:3
+msgid "en"
+msgstr "ru"
+
+#: dev/templates/base.html:5
+msgid "DEVELOPMENT django-Survey"
+msgstr "Разработка django-Survey"
+
+#: scientific_survey/actions.py:14
+#, python-format
+msgid "%(count)d survey was successfully marked as published."
+msgid_plural "%(count)d surveys were successfully marked as published"
+msgstr[0] "опрос %(count)d успешно помечен как опубликованный."
+msgstr[1] "опросы %(count)d помечены как опубликованные."
+
+#: scientific_survey/actions.py:23
+msgid "Mark selected surveys as published"
+msgstr "Помечено как опублиовано"
+
+#: scientific_survey/exporter/json/survey2json.py:20
+msgid "Anonymous"
+msgstr "Анонимно"
+
+#: scientific_survey/exporter/json/survey2json.py:62
+msgid "Export to JSON"
+msgstr "Экспортировать в формате JSON"
+
+#: scientific_survey/models/answer.py:24
+#: scientific_survey/models/answer_group.py:72
+msgid "Answer group"
+msgstr "Набор ответов"
+
+#: scientific_survey/models/answer.py:26
+msgid "Question"
+msgstr "Вопрос"
+
+#: scientific_survey/models/answer.py:27
+msgid "Response"
+msgstr "Ответ"
+
+#: scientific_survey/models/answer.py:28
+#: scientific_survey/models/response.py:27
+msgid "Creation date"
+msgstr "Дата создания"
+
+#: scientific_survey/models/answer.py:29
+#: scientific_survey/models/response.py:28
+msgid "Update date"
+msgstr "Дата обновления"
+
+#: scientific_survey/models/answer.py:30
+msgid "Content"
+msgstr "Содержание"
+
+# "if the question type" repeated in english original
+#: scientific_survey/models/answer_group.py:20
+msgid ""
+"The choices field is only used if the question type\n"
+"if the question type is 'radio', 'select', or\n"
+"'select multiple' provide a comma-separated list of\n"
+"options for this question ."
+msgstr ""
+"Поле выбора используется только в том случае, если тип вопроса\n"
+"если тип вопроса - 'radio', 'select' или\n"
+"'select multiple' предоставляет разделенный запятыми список\n"
+"вариантов этого вопроса ."
+
+#: scientific_survey/models/answer_group.py:58
+msgid "text (multiple line)"
+msgstr "текст (многострочный)"
+
+#: scientific_survey/models/answer_group.py:59
+msgid "short text (one line)"
+msgstr "короткий текст (однострочный)"
+
+#: scientific_survey/models/answer_group.py:60
+msgid "radio"
+msgstr "radio"
+
+#: scientific_survey/models/answer_group.py:61
+msgid "select"
+msgstr "выбор"
+
+#: scientific_survey/models/answer_group.py:62
+msgid "Select Multiple"
+msgstr "Множественный выбор"
+
+#: scientific_survey/models/answer_group.py:63
+msgid "Select Image"
+msgstr "выбор изображения"
+
+#: scientific_survey/models/answer_group.py:64
+msgid "integer"
+msgstr "целое"
+
+#: scientific_survey/models/answer_group.py:65
+msgid "float"
+msgstr "дробное число"
+
+#: scientific_survey/models/answer_group.py:66
+msgid "date"
+msgstr "дата"
+
+#: scientific_survey/models/answer_group.py:69
+msgid "Type"
+msgstr "Тип"
+
+#: scientific_survey/models/answer_group.py:70
+msgid "Choices"
+msgstr "Варианты"
+
+#: scientific_survey/models/answer_group.py:74
+#: scientific_survey/models/category.py:12
+#: scientific_survey/models/survey.py:28
+msgid "Name"
+msgstr "Название"
+
+#: scientific_survey/models/answer_group.py:75
+msgid "Prefix"
+msgstr "Префикс"
+
+#: scientific_survey/models/answer_group.py:76
+msgid "Suffix"
+msgstr "Суффикс"
+
+#: scientific_survey/models/category.py:13
+#: scientific_survey/models/question.py:38
+#: scientific_survey/models/response.py:29
+msgid "Survey"
+msgstr "Тест"
+
+#: scientific_survey/models/category.py:14
+msgid "Display order"
+msgstr "Порядок отображения"
+
+#: scientific_survey/models/category.py:15
+#: scientific_survey/models/survey.py:29
+msgid "Description"
+msgstr "Описание"
+
+#: scientific_survey/models/category.py:19
+msgid "category"
+msgstr "категория"
+
+#: scientific_survey/models/category.py:20
+msgid "categories"
+msgstr "категории"
+
+#: scientific_survey/models/question.py:22
+msgid ""
+"Order of this question in the display (starting with 1). If none is "
+"specified, the question will be shown in a random order"
+msgstr ""
+
+#: scientific_survey/models/question.py:32
+msgid "Text"
+msgstr "Текст"
+
+#: scientific_survey/models/question.py:33
+msgid "Order"
+msgstr "Порядок"
+
+#: scientific_survey/models/question.py:34
+msgid "Required"
+msgstr "Требуемый"
+
+#: scientific_survey/models/question.py:36
+msgid "Category"
+msgstr "Категория"
+
+#: scientific_survey/models/question.py:39
+#: scientific_survey/models/response.py:33
+msgid "Extra"
+msgstr "Дополнительное"
+
+#: scientific_survey/models/question.py:42
+msgid "question"
+msgstr "вопрос"
+
+#: scientific_survey/models/question.py:43
+msgid "questions"
+msgstr "вопросы"
+
+#: scientific_survey/models/response.py:30
+msgid "User"
+msgstr "Пользователь"
+
+#: scientific_survey/models/response.py:31
+msgid "Interview unique identifier"
+msgstr "Уникальный идентификатор интервью"
+
+#: scientific_survey/models/response.py:36
+msgid "Set of answers to surveys"
+msgstr "Набор ответов на опросы"
+
+#: scientific_survey/models/response.py:37
+msgid "Sets of answers to surveys"
+msgstr "Наборы ответов на опросы"
+
+#: scientific_survey/models/survey.py:23
+msgid "By question"
+msgstr "По вопросам"
+
+#: scientific_survey/models/survey.py:24
+msgid "By category"
+msgstr "По категориям"
+
+#: scientific_survey/models/survey.py:25
+msgid "All in one page"
+msgstr "Все в одной странице"
+
+#: scientific_survey/models/survey.py:30
+msgid "Users can see it and answer it"
+msgstr "Пользователи могут увидеть его и ответить на него"
+
+#: scientific_survey/models/survey.py:31
+msgid "Only authenticated users can see it and answer it"
+msgstr ""
+"Только прошедшие проверку пользователи могут видеть его и отвечать на него"
+
+#: scientific_survey/models/survey.py:32
+msgid "Users can edit their answers afterwards"
+msgstr "Пользователи могут редактировать свои ответы впоследствии"
+
+#: scientific_survey/models/survey.py:34
+#| msgid "Display order"
+msgid "Display method"
+msgstr "Способ отображения"
+
+#: scientific_survey/models/survey.py:36
+msgid "Template"
+msgstr "Шаблон"
+
+#: scientific_survey/models/survey.py:37
+msgid "Publication date"
+msgstr "Дата публикации"
+
+#: scientific_survey/models/survey.py:38
+msgid "Expiration date"
+msgstr "дата удаления"
+
+#: scientific_survey/models/survey.py:42
+msgid "survey"
+msgstr "опрос"
+
+#: scientific_survey/models/survey.py:43
+msgid "surveys"
+msgstr "опросы"
+
+#: scientific_survey/templates/survey/completed.html:4
+#: scientific_survey/templates/survey/completed.html:7
+msgid "Survey completed"
+msgstr "Опрос завершен"
+
+#: scientific_survey/templates/survey/completed.html:8
+msgid "Sorry! Your already replied to our survey"
+msgstr "Простите! Вы уже ответили на наш опрос"
+
+#: scientific_survey/templates/survey/completed.html:9
+msgid "Back to survey list"
+msgstr "Вернуться к списку опросов"
+
+#: scientific_survey/templates/survey/confirm.html:4
+#: scientific_survey/templates/survey/confirm.html:7
+msgid "Survey submitted"
+msgstr "Опрос представлен"
+
+#: scientific_survey/templates/survey/confirm.html:10
+msgid "Thanks! Your answers have been saved"
+msgstr "Спасибо! Ваши ответы были сохранены"
+
+#: scientific_survey/templates/survey/confirm.html:14
+msgid "You can always come back and change them."
+msgstr "Вы всегда можете вернуться и изменить их."
+
+#: scientific_survey/templates/survey/list.html:7
+msgid "Welcome to the Django Survey app"
+msgstr "Добро пожаловать в Опросник"
+
+#: scientific_survey/templates/survey/list.html:13
+#| msgid "Take the Survey"
+msgid "Continue the Survey"
+msgstr "Продолжить опрос"
+
+#: scientific_survey/templates/survey/list.html:15
+#: scientific_survey/templates/survey/list.html:18
+msgid "Take the Survey"
+msgstr "Принять участие в опросе"
+
+#: scientific_survey/templates/survey/survey.html:45
+msgid "Answer this part"
+msgstr "Ответьте на эту часть"
+
+#: scientific_survey/templates/survey/survey.html:61
+msgid "Questions"
+msgstr "Ответы"
+
+#: scientific_survey/templates/survey/survey.html:67
+msgid "I'm done!"
+msgstr "Я завершил!"

@@ -1,0 +1,321 @@
+# django-survey-and-report's japanese i18n file
+# This file is distributed under the MIT license.
+# Nobukuni Suzue <nsuzue@me.com>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-21 18:35+0000\n"
+"PO-Revision-Date: 2021-12-21 18:36+0000\n"
+"Last-Translator:   <>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
+
+#: dev/templates/base.html:3
+msgid "en"
+msgstr "ja"
+
+#: dev/templates/base.html:5
+msgid "DEVELOPMENT django-Survey"
+msgstr "django-Surveyの開発"
+
+#: scientific_survey/actions.py:14
+#, python-format
+msgid "%(count)d survey was successfully marked as published."
+msgid_plural "%(count)d surveys were successfully marked as published"
+msgstr[0] "%(count)d つの調査が「公開」に設定されました"
+msgstr[1] "%(count)d つの調査が「公開」に設定されました"
+
+#: scientific_survey/actions.py:23
+msgid "Mark selected surveys as published"
+msgstr "選択した調査を公開する"
+
+#: scientific_survey/exporter/json/survey2json.py:20
+msgid "Anonymous"
+msgstr "匿名"
+
+#: scientific_survey/exporter/json/survey2json.py:62
+msgid "Export to JSON"
+msgstr ""
+
+#: scientific_survey/models/answer.py:24
+#: scientific_survey/models/answer_group.py:72
+msgid "Answer group"
+msgstr ""
+
+#: scientific_survey/models/answer.py:26
+msgid "Question"
+msgstr "質問"
+
+#: scientific_survey/models/answer.py:27
+msgid "Response"
+msgstr "反応"
+
+#: scientific_survey/models/answer.py:28
+#: scientific_survey/models/response.py:27
+msgid "Creation date"
+msgstr "作成日"
+
+#: scientific_survey/models/answer.py:29
+#: scientific_survey/models/response.py:28
+msgid "Update date"
+msgstr "更新日"
+
+#: scientific_survey/models/answer.py:30
+msgid "Content"
+msgstr "内容"
+
+#: scientific_survey/models/answer_group.py:20
+msgid ""
+"The choices field is only used if the question type\n"
+"if the question type is 'radio', 'select', or\n"
+"'select multiple' provide a comma-separated list of\n"
+"options for this question ."
+msgstr ""
+"選択肢フィールドは、質問のタイプが「ラジオボタン」、「リスト（単一選択）」、「リスト（複数選択）」の場合のみ有効です。選択肢はカンマで区切ってください。"
+
+#: scientific_survey/models/answer_group.py:58
+msgid "text (multiple line)"
+msgstr "テキスト（複数行）"
+
+#: scientific_survey/models/answer_group.py:59
+msgid "short text (one line)"
+msgstr "テキスト（一行）"
+
+#: scientific_survey/models/answer_group.py:60
+msgid "radio"
+msgstr "ラジオボタン"
+
+#: scientific_survey/models/answer_group.py:61
+msgid "select"
+msgstr "リスト（単一選択）"
+
+#: scientific_survey/models/answer_group.py:62
+msgid "Select Multiple"
+msgstr "リスト（複数選択）"
+
+#: scientific_survey/models/answer_group.py:63
+msgid "Select Image"
+msgstr "イメージ選択"
+
+#: scientific_survey/models/answer_group.py:64
+msgid "integer"
+msgstr "整数"
+
+#: scientific_survey/models/answer_group.py:65
+msgid "float"
+msgstr ""
+
+#: scientific_survey/models/answer_group.py:66
+msgid "date"
+msgstr ""
+
+#: scientific_survey/models/answer_group.py:69
+msgid "Type"
+msgstr "タイプ"
+
+#: scientific_survey/models/answer_group.py:70
+msgid "Choices"
+msgstr "選択肢"
+
+#: scientific_survey/models/answer_group.py:74
+#: scientific_survey/models/category.py:12
+#: scientific_survey/models/survey.py:28
+msgid "Name"
+msgstr "名前"
+
+#: scientific_survey/models/answer_group.py:75
+msgid "Prefix"
+msgstr ""
+
+#: scientific_survey/models/answer_group.py:76
+msgid "Suffix"
+msgstr ""
+
+#: scientific_survey/models/category.py:13
+#: scientific_survey/models/question.py:38
+#: scientific_survey/models/response.py:29
+msgid "Survey"
+msgstr "調査"
+
+#: scientific_survey/models/category.py:14
+msgid "Display order"
+msgstr "表示順"
+
+#: scientific_survey/models/category.py:15
+#: scientific_survey/models/survey.py:29
+msgid "Description"
+msgstr "定義"
+
+#: scientific_survey/models/category.py:19
+msgid "category"
+msgstr "分類"
+
+#: scientific_survey/models/category.py:20
+msgid "categories"
+msgstr "分類"
+
+#: scientific_survey/models/question.py:22
+msgid ""
+"Order of this question in the display (starting with 1). If none is "
+"specified, the question will be shown in a random order"
+msgstr ""
+
+#: scientific_survey/models/question.py:32
+msgid "Text"
+msgstr "テキスト"
+
+#: scientific_survey/models/question.py:33
+msgid "Order"
+msgstr "順序"
+
+#: scientific_survey/models/question.py:34
+msgid "Required"
+msgstr "必須"
+
+#: scientific_survey/models/question.py:36
+msgid "Category"
+msgstr "分類"
+
+#: scientific_survey/models/question.py:39
+#: scientific_survey/models/response.py:33
+msgid "Extra"
+msgstr ""
+
+#: scientific_survey/models/question.py:42
+msgid "question"
+msgstr "質問"
+
+#: scientific_survey/models/question.py:43
+msgid "questions"
+msgstr "質問"
+
+#: scientific_survey/models/response.py:30
+msgid "User"
+msgstr "ユーザー"
+
+#: scientific_survey/models/response.py:31
+msgid "Interview unique identifier"
+msgstr "インタービューのユニークな識別子"
+
+#: scientific_survey/models/response.py:36
+msgid "Set of answers to surveys"
+msgstr "調査に対する回答集"
+
+#: scientific_survey/models/response.py:37
+msgid "Sets of answers to surveys"
+msgstr "調査に対する回答セット"
+
+#: scientific_survey/models/survey.py:23
+#, fuzzy
+#| msgid "question"
+msgid "By question"
+msgstr "質問"
+
+#: scientific_survey/models/survey.py:24
+#, fuzzy
+#| msgid "category"
+msgid "By category"
+msgstr "分類"
+
+#: scientific_survey/models/survey.py:25
+msgid "All in one page"
+msgstr ""
+
+#: scientific_survey/models/survey.py:30
+msgid "Users can see it and answer it"
+msgstr "すべてのユーザーが閲覧・回答できる"
+
+#: scientific_survey/models/survey.py:31
+msgid "Only authenticated users can see it and answer it"
+msgstr "認証されたユーザーのみ閲覧・回答できる"
+
+#: scientific_survey/models/survey.py:32
+msgid "Users can edit their answers afterwards"
+msgstr "ユーザーは後で回答を編集できます"
+
+#: scientific_survey/models/survey.py:34
+#, fuzzy
+#| msgid "Display order"
+msgid "Display method"
+msgstr "表示順"
+
+#: scientific_survey/models/survey.py:36
+msgid "Template"
+msgstr "テンプレート"
+
+#: scientific_survey/models/survey.py:37
+msgid "Publication date"
+msgstr ""
+
+#: scientific_survey/models/survey.py:38
+msgid "Expiration date"
+msgstr ""
+
+#: scientific_survey/models/survey.py:42
+msgid "survey"
+msgstr "調査"
+
+#: scientific_survey/models/survey.py:43
+msgid "surveys"
+msgstr "調査"
+
+#: scientific_survey/templates/survey/completed.html:4
+#: scientific_survey/templates/survey/completed.html:7
+msgid "Survey completed"
+msgstr "調査終了"
+
+#: scientific_survey/templates/survey/completed.html:8
+msgid "Sorry! Your already replied to our survey"
+msgstr "申し訳ありません。あなたは既に回答済みです。"
+
+#: scientific_survey/templates/survey/completed.html:9
+msgid "Back to survey list"
+msgstr "調査一覧に戻る"
+
+#: scientific_survey/templates/survey/confirm.html:4
+#: scientific_survey/templates/survey/confirm.html:7
+msgid "Survey submitted"
+msgstr "調査が終了しました"
+
+#: scientific_survey/templates/survey/confirm.html:10
+msgid "Thanks! Your answers have been saved"
+msgstr "ありがとうございました。回答内容が保存されました。"
+
+#: scientific_survey/templates/survey/confirm.html:14
+msgid "You can always come back and change them."
+msgstr "あとで回答内容を変更することが出来ます。"
+
+#: scientific_survey/templates/survey/list.html:7
+msgid "Welcome to the Django Survey app"
+msgstr "Django Surveyアプリケーションにようこそ"
+
+#: scientific_survey/templates/survey/list.html:13
+#, fuzzy
+#| msgid "Take the Survey"
+msgid "Continue the Survey"
+msgstr "この調査に回答する"
+
+#: scientific_survey/templates/survey/list.html:15
+#: scientific_survey/templates/survey/list.html:18
+msgid "Take the Survey"
+msgstr "この調査に回答する"
+
+#: scientific_survey/templates/survey/survey.html:45
+msgid "Answer this part"
+msgstr "この質問に回答する"
+
+#: scientific_survey/templates/survey/survey.html:61
+msgid "Questions"
+msgstr "質問"
+
+#: scientific_survey/templates/survey/survey.html:67
+msgid "I'm done!"
+msgstr "回答を終了する"

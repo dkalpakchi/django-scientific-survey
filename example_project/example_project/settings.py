@@ -16,8 +16,6 @@ import os
 # logging.basicConfig(level=logging.DEBUG, format="%(name)s.%(funcName)s() l.%(lineno)s -\033[32m %(message)s \033[39m")
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# CSV_DIRECTORY = Path(__file__).parent.parent.joinpath("csv")
-# TEX_DIRECTORY = Path(__file__).parent.parent.joinpath("tex")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -30,9 +28,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# EXCEL_COMPATIBLE_CSV = True
-TEX_DIRECTORY = "tex"
-
 
 # Application definition
 
@@ -44,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "bootstrapform",
-    "survey",
+    "scientific_survey",
 ]
 
 MIDDLEWARE = [

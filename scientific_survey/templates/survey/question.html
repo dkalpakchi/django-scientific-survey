@@ -1,0 +1,41 @@
+{% load bootstrap %}
+{% load survey_extras %}
+
+{% for question, fields in groups %}
+  <table class="table table-hover">
+    <tbody>
+      <tr>
+        <th>{{ forloop.counter}}. {{ question }}</th>
+      </tr>
+      {% for form, prefix, suffix in fields %}
+        <tr class="{% if form.errors%} danger {% endif %}">
+          {% if form.field.widget.attrs.category == category.name or not form.field.widget.attrs.category %}
+          <td>
+            <div class="criterion">
+              {{form.label|safe|linebreaksbr }}
+              {% if form.field.required %}
+                <span class="glyphicon glyphicon-asterisk" style="color:red"> </span>
+              {% endif %}
+            </div>
+            <span class="help-inline" style="color:red">
+              <strong> {% for error in  form.errors %}{{ error }}{% endfor %} </strong>
+            </span>
+            <br>
+            {% if form.field.widget.input_type == 'select' %}
+              <select name="{{form.name}}"{% if form.field.widget.attrs.disabled %} disabled{% endif %}>
+            {% endif %}
+            {% if prefix %}<span class="prefix">{{prefix}}</span>{% endif %}
+            {% for field in form %}
+              {{ field }}
+            {% endfor %}
+            {% if suffix %}<span class="suffix">{{suffix}}</span>{% endif %}
+            {% if form.field.widget.input_type == 'select' %}
+              </select>
+            {% endif %}
+          </td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endfor %}

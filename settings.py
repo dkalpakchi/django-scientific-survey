@@ -22,8 +22,6 @@ print(
 
 DEBUG = True
 ROOT = os.path.dirname(os.path.abspath(__file__))
-CSV_DIRECTORY = os.path.join(ROOT, "csv")
-TEX_DIRECTORY = os.path.join(ROOT, "tex")
 
 logging.basicConfig(level=logging.DEBUG, format="%(name)s.%(funcName)s() l.%(lineno)s -\033[32m %(message)s \033[39m")
 
@@ -40,9 +38,6 @@ DATABASES = {
 }
 
 USER_DID_NOT_ANSWER = "Left blank"
-
-TEX_CONFIGURATION_FILE = os.path.join(ROOT, "doc", "example_conf.yaml")
-SURVEY_DEFAULT_PIE_COLOR = "red!50"
 
 CHOICES_SEPARATOR = ","
 
@@ -69,7 +64,7 @@ STATICFILES_FINDERS = (
 DEBUG_ADMIN_NAME = "test_admin"
 DEBUG_ADMIN_PASSWORD = "test_password"
 
-STATICFILES_DIRS = [os.path.normpath(os.path.join(ROOT, "..", "survey", "static"))]
+STATICFILES_DIRS = [os.path.normpath(os.path.join(ROOT, "..", "scientific_survey", "static"))]
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = "js*79rk(+s+x9)8co+10$zghe2f)+33jd1l2m#f)vl+pvtj24e"
@@ -77,7 +72,7 @@ SECRET_KEY = "js*79rk(+s+x9)8co+10$zghe2f)+33jd1l2m#f)vl+pvtj24e"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(ROOT, "survey", "templates"), os.path.join(ROOT, "dev", "templates")],
+        "DIRS": [os.path.join(ROOT, "scientific_survey", "templates"), os.path.join(ROOT, "dev", "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "debug": DEBUG,
@@ -118,26 +113,27 @@ INSTALLED_APPS = (
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-    "survey",
+    "scientific_survey",
     "bootstrapform",
     "rosetta",
     "tinymce",
     "nested_admin",
 )
 
-LOCALE_PATHS = (os.path.join(ROOT, "survey", "locale"),)
+LOCALE_PATHS = (os.path.join(ROOT, "scientific_survey", "locale"),)
 LANGUAGE_CODE = "en-us"
 LANGUAGES = (
-    ("en", "english"),
-    ("ru", "russian"),
-    ("es", "spanish"),
-    ("fr", "french"),
+    ("en", "English"),
+    ("ru", "Russian"),
+    ("es", "Spanish"),
+    ("fr", "French"),
     ("ja", "Japanese"),
     ("zh", "Chinese"),
     ("de", "German"),
     ("id", "Indonesian"),
     ("pt-br", "Brazilian Portuguese"),
     ("pl", "Polish"),
+    ("uk", "Ukrainian"),
 )
 
 LOGIN_REDIRECT_URL = "/"

@@ -1,0 +1,63 @@
+{
+    "name": "My First Survey",
+    "items": [
+        {
+            "question": "Sentence: Does it work?<br>Paraphrase: Would it work?",
+            "required": true,
+            "extra": {
+                "model": "A"
+            },
+            "order": -1,
+            "answer_sets": [
+                {
+                    "type": "radio",
+                    "name": "Fluency",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "name": "Equivalence",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        },
+        {
+            "question": "Sentence: Could it work?<br>Paraphrase: Would it work?",
+            "required": true,
+            "extra": {
+                "model": "B"
+            },
+            "order": -1,
+            "answer_sets": [
+                {
+                    "type": "radio",
+                    "name": "Fluency",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2"
+                    ]
+                },
+                {
+                    "type": "radio",
+                    "name": "Equivalence",
+                    "choices": [
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                    ]
+                }
+            ]
+        }
+    ]
+}

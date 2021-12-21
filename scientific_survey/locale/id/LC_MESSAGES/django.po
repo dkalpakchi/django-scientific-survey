@@ -1,0 +1,321 @@
+# django-survey-and-report's i18n file
+# This file is distributed under the MIT license.
+# Dhana Dhira <dhanadhira@yahoo.com>, 2020
+# Pierre SASSOULAS <pierre.sassoulas@gmail.com>, 2020.
+#
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-21 18:35+0000\n"
+"PO-Revision-Date: 2021-12-21 18:37+0000\n"
+"Last-Translator:   <>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
+
+#: dev/templates/base.html:3
+msgid "en"
+msgstr "id"
+
+#: dev/templates/base.html:5
+msgid "DEVELOPMENT django-Survey"
+msgstr "Pengembangan django-survey"
+
+#: scientific_survey/actions.py:14
+#, python-format
+msgid "%(count)d survey was successfully marked as published."
+msgid_plural "%(count)d surveys were successfully marked as published"
+msgstr[0] "%(count)d survei berhasil ditandai sebagai diterbitkan"
+msgstr[1] "%(count)d survei berhasil ditandai sebagai diterbitkan"
+
+#: scientific_survey/actions.py:23
+msgid "Mark selected surveys as published"
+msgstr "Tandai survei yang dipilih sebagai diterbitkan"
+
+#: scientific_survey/exporter/json/survey2json.py:20
+msgid "Anonymous"
+msgstr "Anonim"
+
+#: scientific_survey/exporter/json/survey2json.py:62
+#| msgid "Export to CSV"
+msgid "Export to JSON"
+msgstr "Ekspor sebagai JSON"
+
+#: scientific_survey/models/answer.py:24
+#: scientific_survey/models/answer_group.py:72
+msgid "Answer group"
+msgstr ""
+
+#: scientific_survey/models/answer.py:26
+msgid "Question"
+msgstr "Pertanyaan"
+
+#: scientific_survey/models/answer.py:27
+msgid "Response"
+msgstr "Respon"
+
+#: scientific_survey/models/answer.py:28
+#: scientific_survey/models/response.py:27
+msgid "Creation date"
+msgstr "Tanggal pembuatan"
+
+#: scientific_survey/models/answer.py:29
+#: scientific_survey/models/response.py:28
+msgid "Update date"
+msgstr "Tanggal pembaruan"
+
+#: scientific_survey/models/answer.py:30
+msgid "Content"
+msgstr "Konten"
+
+#: scientific_survey/models/answer_group.py:20
+msgid ""
+"The choices field is only used if the question type\n"
+"if the question type is 'radio', 'select', or\n"
+"'select multiple' provide a comma-separated list of\n"
+"options for this question ."
+msgstr ""
+"Field pilihan hanya digunakan pada tipe pertanyaan\n"
+"berupa 'radio', 'pilih', atau\n"
+"'pilih beberapa' menyediakan sebuah daftar opsi\n"
+"yang dipisahkan tanda koma untuk pertanyaan ini"
+
+#: scientific_survey/models/answer_group.py:58
+msgid "text (multiple line)"
+msgstr "teks (beberapa baris)"
+
+#: scientific_survey/models/answer_group.py:59
+msgid "short text (one line)"
+msgstr "teks pendek (satu baris)"
+
+#: scientific_survey/models/answer_group.py:60
+msgid "radio"
+msgstr "radio"
+
+#: scientific_survey/models/answer_group.py:61
+msgid "select"
+msgstr "pilih"
+
+#: scientific_survey/models/answer_group.py:62
+msgid "Select Multiple"
+msgstr "Pilih beberapa"
+
+#: scientific_survey/models/answer_group.py:63
+msgid "Select Image"
+msgstr "Pilih Gambar"
+
+#: scientific_survey/models/answer_group.py:64
+msgid "integer"
+msgstr "bilangan bulat"
+
+#: scientific_survey/models/answer_group.py:65
+msgid "float"
+msgstr "bilangan desimal"
+
+#: scientific_survey/models/answer_group.py:66
+msgid "date"
+msgstr "tanggal"
+
+#: scientific_survey/models/answer_group.py:69
+msgid "Type"
+msgstr "Tipe"
+
+#: scientific_survey/models/answer_group.py:70
+msgid "Choices"
+msgstr "Pilihan"
+
+#: scientific_survey/models/answer_group.py:74
+#: scientific_survey/models/category.py:12
+#: scientific_survey/models/survey.py:28
+msgid "Name"
+msgstr "Nama"
+
+#: scientific_survey/models/answer_group.py:75
+msgid "Prefix"
+msgstr ""
+
+#: scientific_survey/models/answer_group.py:76
+msgid "Suffix"
+msgstr ""
+
+#: scientific_survey/models/category.py:13
+#: scientific_survey/models/question.py:38
+#: scientific_survey/models/response.py:29
+msgid "Survey"
+msgstr "Survei"
+
+#: scientific_survey/models/category.py:14
+msgid "Display order"
+msgstr "Urutan tampilan"
+
+#: scientific_survey/models/category.py:15
+#: scientific_survey/models/survey.py:29
+msgid "Description"
+msgstr "Deskripsi"
+
+#: scientific_survey/models/category.py:19
+msgid "category"
+msgstr "Kategori"
+
+#: scientific_survey/models/category.py:20
+msgid "categories"
+msgstr "Kategori"
+
+#: scientific_survey/models/question.py:22
+msgid ""
+"Order of this question in the display (starting with 1). If none is "
+"specified, the question will be shown in a random order"
+msgstr ""
+
+#: scientific_survey/models/question.py:32
+msgid "Text"
+msgstr "Teks"
+
+#: scientific_survey/models/question.py:33
+msgid "Order"
+msgstr "Urutan"
+
+#: scientific_survey/models/question.py:34
+msgid "Required"
+msgstr "Diperlukan"
+
+#: scientific_survey/models/question.py:36
+msgid "Category"
+msgstr "Kategori"
+
+#: scientific_survey/models/question.py:39
+#: scientific_survey/models/response.py:33
+msgid "Extra"
+msgstr ""
+
+#: scientific_survey/models/question.py:42
+msgid "question"
+msgstr "pertanyaan"
+
+#: scientific_survey/models/question.py:43
+msgid "questions"
+msgstr "pertanyaan-pertanyaan"
+
+#: scientific_survey/models/response.py:30
+msgid "User"
+msgstr "Pengguna"
+
+#: scientific_survey/models/response.py:31
+msgid "Interview unique identifier"
+msgstr "ID wawancara (unik)"
+
+#: scientific_survey/models/response.py:36
+msgid "Set of answers to surveys"
+msgstr "Kumpulan jawaban dari survei"
+
+#: scientific_survey/models/response.py:37
+msgid "Sets of answers to surveys"
+msgstr "Kumpulan jawaban dari survei"
+
+#: scientific_survey/models/survey.py:23
+msgid "By question"
+msgstr "Berdasarkan pertanyaan"
+
+#: scientific_survey/models/survey.py:24
+msgid "By category"
+msgstr "Berdasarkan kategori"
+
+#: scientific_survey/models/survey.py:25
+msgid "All in one page"
+msgstr "Semua dalam satu halaman"
+
+#: scientific_survey/models/survey.py:30
+msgid "Users can see it and answer it"
+msgstr "Pengguna dapat melihat dan menjawabnya"
+
+#: scientific_survey/models/survey.py:31
+msgid "Only authenticated users can see it and answer it"
+msgstr "Hanya pengguna yang telah diotentikasi dapat melihat dan menjawabnya"
+
+#: scientific_survey/models/survey.py:32
+msgid "Users can edit their answers afterwards"
+msgstr "Pengguna dapat mengubah jawabannya setelahnya"
+
+#: scientific_survey/models/survey.py:34
+msgid "Display method"
+msgstr "Metode tampilan"
+
+#: scientific_survey/models/survey.py:36
+msgid "Template"
+msgstr "Templat"
+
+#: scientific_survey/models/survey.py:37
+msgid "Publication date"
+msgstr "Tanggal penayangan"
+
+#: scientific_survey/models/survey.py:38
+msgid "Expiration date"
+msgstr "Tanggal kedaluwarsa"
+
+#: scientific_survey/models/survey.py:42
+msgid "survey"
+msgstr "survei"
+
+#: scientific_survey/models/survey.py:43
+msgid "surveys"
+msgstr "survei"
+
+#: scientific_survey/templates/survey/completed.html:4
+#: scientific_survey/templates/survey/completed.html:7
+msgid "Survey completed"
+msgstr "Survei selesai"
+
+#: scientific_survey/templates/survey/completed.html:8
+msgid "Sorry! Your already replied to our survey"
+msgstr "Maaf, Anda telah menjawab survei kami"
+
+#: scientific_survey/templates/survey/completed.html:9
+msgid "Back to survey list"
+msgstr "Kembali ke daftar survei"
+
+#: scientific_survey/templates/survey/confirm.html:4
+#: scientific_survey/templates/survey/confirm.html:7
+msgid "Survey submitted"
+msgstr "Survei terkirim"
+
+#: scientific_survey/templates/survey/confirm.html:10
+msgid "Thanks! Your answers have been saved"
+msgstr "Terima kasih, jawaban Anda telah disimpan"
+
+#: scientific_survey/templates/survey/confirm.html:14
+msgid "You can always come back and change them."
+msgstr "Anda dapat kembali dan mengubahnya kapanpun."
+
+#: scientific_survey/templates/survey/list.html:7
+msgid "Welcome to the Django Survey app"
+msgstr "Selamat datang di aplikasi Django Survey"
+
+#: scientific_survey/templates/survey/list.html:13
+#, fuzzy
+#| msgid "Take the Survey"
+msgid "Continue the Survey"
+msgstr "Ambil bagian pada survei"
+
+#: scientific_survey/templates/survey/list.html:15
+#: scientific_survey/templates/survey/list.html:18
+msgid "Take the Survey"
+msgstr "Ambil bagian pada survei"
+
+#: scientific_survey/templates/survey/survey.html:45
+msgid "Answer this part"
+msgstr "Jawab bagian ini"
+
+#: scientific_survey/templates/survey/survey.html:61
+msgid "Questions"
+msgstr "Pertanyaan"
+
+#: scientific_survey/templates/survey/survey.html:67
+msgid "I'm done!"
+msgstr "Saya sudah selesai!"
