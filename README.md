@@ -38,7 +38,7 @@ The software is developed in English.
 
 Full translation is available for these languages (in alphabetical order):
 
-* [x] Russian thanks to [Vlad M.](https://github.com/manchos/)
+* [x] Russian thanks to [Vlad M.](https://github.com/manchos/) and [Dmytro Kalpakchi](https://github.com/dkalpakchi)
 * [x] Ukrainian thanks to [Dmytro Kalpakchi](https://github.com/dkalpakchi)
 
 Partial translation (due to the contributions to the original "django-survey-and-report") are available for these languages (in alphabetical order):
