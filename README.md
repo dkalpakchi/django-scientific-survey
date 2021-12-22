@@ -4,6 +4,12 @@ A django survey app for conducting scientific surveys, based on "django-survey-a
 The following changes were made to the original app to accommodate scientific use cases:
 
 * Introduced answer groups for the use cases when a datapoint should be evaluated using multiple different aspects. For instance, for a given text, you might want to evaluate its naturalness on the scale from 1 to 5, its fluency on the scale from 1 to 10 and its coherence on the scale from 1 to 4.
+* Added the possibility to use numerical rating scales by prodiving prefix and suffix for an answer group. See example of how this looks below.
+
+<p align="center">
+  <img src="doc/numerical_rating_scale_example.png" alt="An example of a numerical rating scale">
+</p>
+
 * Added a field called "extra" to the Question model to carry out some extra question-specific information. This information will be invisible to the end user and will be simply transfered to the exported survey results for easier analysis later. For instance, this can hold the information about the model that has generated the text.
 * Added the possibility of using external redirect on finishing the survey, which is useful for integrating with crowdsourcing platforms frequently used for human evaluation, such as [Prolific](https://www.prolific.co/).
 * Changed import and export format from CSV to JSON and added the answer groups and the "extra" field to this format.
@@ -188,9 +194,7 @@ We're using `pre-commit`, it should take care of linting during commit.
 
 ## Translating the project
 
-Django-scientific-survey is available in multiple language.
-Your contribution would be very appreciated if you
-know a language that is not yet available.
+Django-scientific-survey is available in multiple languages. Your contribution would be very appreciated if you know a language that is not yet available.
 
 ### As a developer
 
@@ -205,12 +209,12 @@ python manage.py makemessages --no-obsolete --no-wrap --ignore venv -l uk
 Then run the server, as usual (`python manage.py runserver`) and access `http://localhost:8000/admin` to login.
 Then go to `http://localhost:8000/rosetta` to translate
 
-Afterwards addd your translations to GitHub
+Afterwards addd your translations to GitHub and create a pull request for them to be merged.
 ~~~~bash
 git add survey/locale/
 ~~~~
 
-If your language is not yet available in rosetta, [this stack overflow question](https://stackoverflow.com/questions/12946830/) should work even for language not handled by django.
+If your language is not yet available in rosetta, [according to this stack overflow question](https://stackoverflow.com/questions/12946830/) should work even for languages not handled by django.
 
 ### As a translator
 
