@@ -31,6 +31,10 @@ class Json2Survey:
                 cid = int(item.get("category"))
                 q.category = categories[cid - 1]
                 q.save()
+            except IndexError:
+                pass
+            except TypeError:
+                pass
             except ValueError:
                 pass
 
