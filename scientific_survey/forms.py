@@ -14,7 +14,7 @@ from django.utils.text import slugify
 
 from scientific_survey.models import Answer, AnswerGroup, Category, Question, Response, Survey
 from scientific_survey.signals import survey_completed
-from scientific_survey.widgets import ImageSelectWidget
+from scientific_survey.widgets import ImageSelectWidget, RangeWidget
 
 LOGGER = logging.getLogger(__name__)
 
@@ -28,6 +28,8 @@ class ResponseForm(models.ModelForm):
         AnswerGroup.INTEGER: forms.IntegerField,
         AnswerGroup.FLOAT: forms.FloatField,
         AnswerGroup.DATE: forms.DateField,
+        AnswerGroup.INTEGER_RANGE: forms.IntegerField,
+        AnswerGroup.FLOAT_RANGE: forms.FloatField
     }
 
     WIDGETS = {
@@ -37,6 +39,8 @@ class ResponseForm(models.ModelForm):
         AnswerGroup.SELECT: forms.Select,
         AnswerGroup.SELECT_IMAGE: ImageSelectWidget,
         AnswerGroup.SELECT_MULTIPLE: forms.CheckboxSelectMultiple,
+        AnswerGroup.INTEGER_RANGE: RangeWidget,
+        AnswerGroup.FLOAT_RANGE: RangeWidget
     }
 
     class Meta:
@@ -265,7 +269,9 @@ class ResponseForm(models.ModelForm):
         :rtype: List of String or None"""
         qchoices = {}
         for ag in question.answer_groups.all():
-            if ag.type not in [
+            if ag.type in [AnswerGroup.INTEGER_RANGE, AnswerGroup.FLOAT_RANGE]:
+                qchoices[ag.pk] = ag.choices
+            elif ag.type not in [
                 AnswerGroup.TEXT,
                 AnswerGroup.SHORT_TEXT,
                 AnswerGroup.INTEGER,
@@ -280,6 +286,21 @@ class ResponseForm(models.ModelForm):
                 if choices:
                     qchoices[ag.pk] = choices
         return qchoices or None
+
+    def init_field(self, fkw, ag):
+        field = None
+        if ag.type == AnswerGroup.INTEGER_RANGE or ag.type == AnswerGroup.FLOAT_RANGE:
+            choices = fkw.pop("choices")
+            conv_func = int if ag.type == AnswerGroup.INTEGER_RANGE else float
+            min_val, max_val, step = map(conv_func, choices.split(settings.CHOICES_SEPARATOR))
+            fkw['min_value'] = min_val
+            fkw['max_value'] = max_val
+
+            field = self.FIELDS[ag.type](**fkw)
+            setattr(field, "step_size", step)
+        else:
+            field = self.FIELDS[ag.type](**fkw)
+        return field
 
     def get_question_fields(self, question, **kwargs):
         """Return the field we should use in our form.
@@ -310,10 +331,19 @@ class ResponseForm(models.ModelForm):
                     del fkw["widget"]
             fkw["label"] = ag.name
             try:
-                fields.append((ag, self.FIELDS[ag.type](**fkw)))
+                field = self.init_field(fkw, ag)
+                fields.append((ag, field))
             except KeyError:
                 fields.append((ag, forms.ChoiceField(**fkw)))
         return fields
+
+    def init_attrs(self, ag, field):
+        if ag.type == AnswerGroup.DATE:
+            field.widget.attrs["class"] = "date"
+        elif ag.type == AnswerGroup.INTEGER_RANGE or ag.type == AnswerGroup.FLOAT_RANGE:
+            field.widget.attrs['min_value'] = field.min_value
+            field.widget.attrs['max_value'] = field.max_value
+            field.widget.attrs['step_size'] = getattr(field, "step_size")
 
     def add_question(self, question, data):
         """Add a question to the form.
@@ -333,8 +363,7 @@ class ResponseForm(models.ModelForm):
         fields = self.get_question_fields(question, **kwargs)
         for ag, field in fields:
             field.widget.attrs["category"] = question.category.name if question.category else ""
-            if ag.type == AnswerGroup.DATE:
-                field.widget.attrs["class"] = "date"
+            self.init_attrs(ag, field)
         # logging.debug("Field for %s : %s", question, field.__dict__)
 
         idq = "question_{}".format(question.pk)
@@ -433,7 +462,6 @@ class ResponseForm(models.ModelForm):
 
     def groups_by_category(self, category_name):
         question_ids = self.questions_by_categories.get(category_name)
-        print("IDS", question_ids)
         if question_ids:
             return [
                 (v["text"], [(self[k], p, s) for k, p, s in v["fields"]])

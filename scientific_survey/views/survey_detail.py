@@ -21,9 +21,9 @@ class SurveyDetail(View):
             template_name = survey.template
         else:
             if survey.is_all_in_one_page():
-                template_name = "survey/one_page_survey.html"
+                template_name = "scientific_survey/one_page_survey.html"
             else:
-                template_name = "survey/survey.html"
+                template_name = "scientific_survey/survey.html"
         if survey.need_logged_user and not request.user.is_authenticated:
             return redirect("%s?next=%s" % (settings.LOGIN_URL, request.path))
 
@@ -75,9 +75,9 @@ class SurveyDetail(View):
             template_name = survey.template
         else:
             if survey.is_all_in_one_page():
-                template_name = "survey/one_page_survey.html"
+                template_name = "scientific_survey/one_page_survey.html"
             else:
-                template_name = "survey/survey.html"
+                template_name = "scientific_survey/survey.html"
         return render(request, template_name, context)
 
     def final_redirect(self, survey, response):

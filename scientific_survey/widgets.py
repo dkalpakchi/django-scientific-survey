@@ -8,12 +8,11 @@ class ImageSelectWidget(forms.widgets.Widget):
     class Media:
         js = (
             "http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js",
-            "http://maps.googleapis.com/maps/api/js?sensor=false",
-            "js/survey.js",
+            "http://maps.googleapis.com/maps/api/js?sensor=false"
         )
 
     def render(self, name, value, *args, **kwargs):
-        template_name = "survey/forms/image_select.html"
+        template_name = "scientific_survey/forms/image_select.html"
         choices = []
         for index, choice in enumerate(self.choices):
             if choice[0] != "":
@@ -22,3 +21,7 @@ class ImageSelectWidget(forms.widgets.Widget):
         context = {"name": name, "choices": choices}
         html = render_to_string(template_name, context)
         return html
+
+
+class RangeWidget(forms.widgets.Widget):
+    template_name = "scientific_survey/forms/range.html"

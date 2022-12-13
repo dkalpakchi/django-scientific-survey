@@ -15,9 +15,10 @@ LOGGER = logging.getLogger(__name__)
 
 CHOICES_HELP_TEXT = _(
     """The choices field is only used if the question type
-if the question type is 'radio', 'select', or
-'select multiple' provide a comma-separated list of
-options for this question ."""
+if the question type is 'radio', 'select',
+'select multiple', or range. For the first 3, please provide
+a comma-separated list of options for this question, for range,
+please provide a comma-separated list of min,max,step."""
 )
 
 
@@ -50,6 +51,8 @@ class AnswerGroup(models.Model):
     INTEGER = "integer"
     FLOAT = "float"
     DATE = "date"
+    INTEGER_RANGE = "range_int"
+    FLOAT_RANGE = "range_float"
 
     QUESTION_TYPES = (
         (TEXT, _("text (multiple line)")),
@@ -59,8 +62,10 @@ class AnswerGroup(models.Model):
         (SELECT_MULTIPLE, _("Select Multiple")),
         (SELECT_IMAGE, _("Select Image")),
         (INTEGER, _("integer")),
-        (FLOAT, _("float")),
+        (FLOAT, _("floating-point number")),
         (DATE, _("date")),
+        (INTEGER_RANGE, _("range (integers)")),
+        (FLOAT_RANGE, _("range (floating-point numbers)"))
     )
 
     type = models.CharField(_("Type"), max_length=200, choices=QUESTION_TYPES, default=TEXT)
