@@ -1,6 +1,7 @@
 # Django scientific survey
 
-A django survey app for conducting scientific surveys, based on "django-survey-and-report" by Pierre Sassoulas.
+A django survey app for conducting scientific surveys, based on "django-survey-and-report" by Pierre Sassoulas. The package supports integration only with Django between versions 2.2 and up to and including 3.2.16. Supporting Django 4 is on the agenda, but not a top priority as of right now.
+
 The following changes were made to the original app to accommodate scientific use cases:
 
 * Introduced answer groups for the use cases when a datapoint should be evaluated using multiple different aspects. For instance, for a given text, you might want to evaluate its naturalness on the scale from 1 to 5, its fluency on the scale from 1 to 10 and its coherence on the scale from 1 to 4.
@@ -15,6 +16,7 @@ The following changes were made to the original app to accommodate scientific us
 * Changed import and export format from CSV to JSON and added the answer groups and the "extra" field to this format.
 * Added the possibility to randomize the order of questions for each survey participant.
 * Added the possibility to import surveys from a JSON file.
+* [New in v0.1.2] Added the possibility to add ranges (sliders) as question types, distinguishing between integer ranges (`range\_int`) and float ranges (`range\_float`). It is possible to specify min, max and step for the range by re-using the already existing `choices` field.
 
 Recognizing that these changes are not necessarily useful for the users of the original "django-survey-and-report" app (and that the code became more different from the original than expected initially), it was decided to create a separate package "django-scientific-survey" to acommodate these changes.
 

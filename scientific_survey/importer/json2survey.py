@@ -39,9 +39,10 @@ class Json2Survey:
                 pass
 
             for aset in item["answer_sets"]:
+                choices = aset.get("choices", [])
                 AnswerGroup.objects.create(
                     type=aset["type"],
-                    choices=settings.CHOICES_SEPARATOR.join(map(str, aset.get("choices", []))),
+                    choices=settings.CHOICES_SEPARATOR.join(map(str, choices)),
                     question=q,
                     name=aset["name"],
                     prefix=aset.get("prefix", ""),
