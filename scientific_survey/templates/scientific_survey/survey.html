@@ -32,6 +32,7 @@
 		{% endif %}
 	    	{% csrf_token %}
       	<input type="hidden" name="seed" value="{{response_form.random_seed}}">
+      	<input type="hidden" name="scope" value="{{response_form.scope_category_id}}">
       	<input type="hidden" name="extra" value="{{response_form.extra}}">
         {% for category in categories %}
         	{% if category.name == response_form.active_category_name or not response_form.active_category_name %}

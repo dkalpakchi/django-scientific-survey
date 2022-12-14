@@ -80,3 +80,7 @@ class Answer(models.Model):
         return "{} to {} for an answer group '{}' -> {}".format(
             self.__class__.__name__, self.question, str(self.answer_group), self.body
         )
+
+    @property
+    def question_category(self):
+        return str(self.question.category)

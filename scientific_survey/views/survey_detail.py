@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+from datetime import date
 
 from django.conf import settings
 from django.shortcuts import redirect, render, reverse
@@ -17,6 +18,11 @@ class SurveyDetail(View):
         survey = kwargs.pop("survey", None)
         step = kwargs.pop("step", 0)
         seed = kwargs.pop("seed", None)
+
+        session_key = "survey_%s" % (kwargs["id"],)
+        scope_cat = None
+        if session_key in request.session:
+            scope_cat = request.session[session_key].get("scope_cat", None)
         if survey.template is not None and len(survey.template) > 4:
             template_name = survey.template
         else:
@@ -27,7 +33,20 @@ class SurveyDetail(View):
         if survey.need_logged_user and not request.user.is_authenticated:
             return redirect("%s?next=%s" % (settings.LOGIN_URL, request.path))
 
-        form = ResponseForm(survey=survey, user=request.user, step=step, seed=seed, extra=request.GET.urlencode())
+        form = ResponseForm(
+            survey=survey, user=request.user,
+            step=step, seed=seed,
+            scope=scope_cat,
+            extra=request.GET.urlencode()
+        )
+        if form.scope_category_id:
+            if session_key not in request.session:
+                request.session[session_key] = {}
+            request.session[session_key]["scope_cat"] = form.scope_category_id
+            request.session.modified = True
+        if form.survey.expire_date < date.today():
+            return redirect('survey-full')
+
         categories = form.current_categories()
 
         asset_context = {
@@ -55,6 +74,7 @@ class SurveyDetail(View):
             survey=survey,
             user=request.user,
             step=kwargs.get("step", 0),
+            scope=request.POST.get("scope"),
             seed=request.POST.get("seed"),
             extra=request.POST.get("extra"),
         )
@@ -92,7 +112,8 @@ class SurveyDetail(View):
             request.session[session_key] = {}
         for key, value in list(form.cleaned_data.items()):
             request.session[session_key][key] = value
-            request.session.modified = True
+        request.session[session_key]["scope_cat"] = form.scope_category_id
+        request.session.modified = True
 
         next_url = form.next_step_url()
 
@@ -109,6 +130,7 @@ class SurveyDetail(View):
                     request.session[session_key],
                     survey=survey,
                     user=request.user,
+                    scope=request.session[session_key].get("scope_cat"),
                     seed=form.random_seed,
                     extra=form.extra,
                 )
@@ -116,13 +138,14 @@ class SurveyDetail(View):
                     response = save_form.save()
                 else:
                     LOGGER.warning("A step of the multipage form failed but should have been discovered before.")
+                    LOGGER.error(save_form.errors)
         # if there is a next step
         if next_url is not None:
             return redirect(next_url)
         del request.session[session_key]
 
         if response is None:
-            return redirect(reverse("survey-list"))
+            return redirect(reverse("survey-error"))
 
         next_ = request.session.get("next", None)
         if next_ is not None:

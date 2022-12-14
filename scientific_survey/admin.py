@@ -5,7 +5,7 @@ from django.contrib import admin
 
 from scientific_survey.actions import make_published
 from scientific_survey.exporter.json import Survey2Json
-from scientific_survey.models import Answer, AnswerGroup, Category, Question, Response, Survey
+from scientific_survey.models import Answer, AnswerGroup, Category, CategoryBooking, Question, Response, Survey
 
 
 class AnswerGroupInline(nested_admin.NestedStackedInline):
@@ -39,8 +39,8 @@ class SurveyAdmin(nested_admin.NestedModelAdmin):
 
 
 class AnswerBaseInline(admin.StackedInline):
-    fields = ("question", "answer_group", "body")
-    readonly_fields = ("question", "answer_group")
+    fields = ("question", "question_category", "answer_group", "body")
+    readonly_fields = ("question", "answer_group", "question_category")
     extra = 0
     model = Answer
 
@@ -54,7 +54,14 @@ class ResponseAdmin(admin.ModelAdmin):
     readonly_fields = ("survey", "created", "updated", "interview_uuid", "user")
 
 
+class CategoryBookingAdmin(admin.ModelAdmin):
+    # specifies the order as well as which fields to act on
+    raw_id_fields = ("survey", "category")
+    list_display = ("survey", "category", "is_active")
+
+
 # admin.site.register(Question, QuestionInline)
 # admin.site.register(Category, CategoryInline)
 admin.site.register(Survey, SurveyAdmin)
 admin.site.register(Response, ResponseAdmin)
+admin.site.register(CategoryBooking, CategoryBookingAdmin)

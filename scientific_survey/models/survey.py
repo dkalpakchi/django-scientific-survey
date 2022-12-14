@@ -33,6 +33,14 @@ class Survey(models.Model):
     display_method = models.SmallIntegerField(
         _("Display method"), choices=DISPLAY_METHOD_CHOICES, default=ALL_IN_ONE_PAGE
     )
+    categories_as_surveys = models.BooleanField(
+        _("Use each category separately as an independent sub-survey"),
+        default=False
+    )
+    save_categories_separately = models.BooleanField(
+        _("Save data for each category in an independent response (only if categories are treated as sub-surveys)"),
+        default=False
+    )
     template = models.CharField(_("Template"), max_length=255, null=True, blank=True)
     publish_date = models.DateField(_("Publication date"), blank=True, null=False, default=now)
     expire_date = models.DateField(_("Expiration date"), blank=True, null=False, default=in_duration_day)

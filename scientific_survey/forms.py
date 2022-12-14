@@ -3,6 +3,7 @@
 import logging
 import random
 import uuid
+from datetime import date, timedelta
 from operator import itemgetter
 
 from django import forms
@@ -12,7 +13,7 @@ from django.forms import models
 from django.urls import reverse
 from django.utils.text import slugify
 
-from scientific_survey.models import Answer, AnswerGroup, Category, Question, Response, Survey
+from scientific_survey.models import Answer, AnswerGroup, Category, CategoryBooking, Question, Response, Survey
 from scientific_survey.signals import survey_completed
 from scientific_survey.widgets import ImageSelectWidget, RangeWidget
 
@@ -52,6 +53,7 @@ class ResponseForm(models.ModelForm):
         self.survey = kwargs.pop("survey")
         self.user = kwargs.pop("user")
         self.extra = kwargs.pop("extra", "")
+        self.scope_category_id = kwargs.pop("scope", "")
         try:
             self.step = int(kwargs.pop("step"))
         except KeyError:
@@ -64,15 +66,24 @@ class ResponseForm(models.ModelForm):
         super(ResponseForm, self).__init__(*args, **kwargs)
         self.uuid = uuid.uuid4().hex
 
-        self.categories = self.survey.non_empty_categories()
-        self.qs_with_no_cat = self.survey.questions.filter(category__isnull=True).order_by("order", "id")
-        self.questions_to_randomize = self.survey.questions.filter(order__isnull=True).order_by("id")
-        self.ordered_questions = self.survey.questions.filter(order__isnull=False).order_by("order")
+        self.categories = self.survey.non_empty_categories()  # list
+
+        self.qs_with_no_cat = self.survey.questions.filter(
+            category__isnull=True).order_by("order", "id")
+
+        self.questions_to_randomize = self.survey.questions.filter(order__isnull=True)
+        self.ordered_questions = self.survey.questions.filter(order__isnull=False)
+
+        self._try_scope_questions()
+
+        self.questions_to_randomize = self.questions_to_randomize.order_by("id")
+        self.ordered_questions = self.ordered_questions.order_by("order")
 
         if self.survey.display_method == Survey.BY_CATEGORY:
             self.steps_count = len(self.categories) + (1 if self.qs_with_no_cat else 0)
         else:
-            self.steps_count = len(self.survey.questions.all())
+            self.steps_count = len(self.questions_to_randomize) + len(self.ordered_questions)
+
         # will contain prefetched data to avoid multiple db calls
         self.response = False
         self.answers = False
@@ -90,6 +101,31 @@ class ResponseForm(models.ModelForm):
         if not self.survey.editable_answers and self.response is not None:
             for name in self.fields.keys():
                 self.fields[name].widget.attrs["disabled"] = True
+
+    def _try_scope_questions(self):
+        if self.survey.categories_as_surveys:
+            if not self.scope_category_id:
+                self._try_find_scope_category()
+            self.questions_to_randomize = self.questions_to_randomize.filter(category_id=self.scope_category_id)
+            self.ordered_questions = self.ordered_questions.filter(category_id=self.scope_category_id)
+
+    def _try_find_scope_category(self):
+        booked = CategoryBooking.objects.filter(
+            survey=self.survey, is_active=True
+        ).values_list('category', flat=True)
+
+        random.seed(self.random_seed)
+        cats2choose = [x for x in self.categories if x.id not in booked]
+        if cats2choose:
+            scope_category = random.choice(cats2choose)
+            self.scope_category_id = scope_category.pk
+            CategoryBooking.objects.get_or_create(
+                survey=self.survey, is_active=True, category=scope_category
+            )
+        else:
+            self.survey.expire_date = date.today() - timedelta(days=1)
+            self.survey.save()
+            return
 
     def get_ordered_question_ids(self, questions2order, questions2randomize):
         ordered_pairs = questions2order.values_list("id", "order").all()
@@ -132,22 +168,42 @@ class ResponseForm(models.ModelForm):
             else:
                 # If display method is all at once
                 if self.categories:
-                    # If additionally there are categories
-                    ordered_ids = []
-                    for cat in self.categories:
-                        qs_for_cat = self.survey.questions.filter(category=cat).order_by("order", "id")
-                        ordered_ids.extend(
-                            self.get_ordered_question_ids(
-                                qs_for_cat.filter(order__isnull=False).order_by("order"),
-                                qs_for_cat.filter(order__isnull=True).order_by("id"),
-                            )
-                        )
+                    qs_for_cat, ordered_ids = self.get_qs_for_cat()
 
                 preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(ordered_ids)])
-                for question in self.survey.questions.order_by(preserved).all():
-                    self.add_question(question, data)
+                if self.survey.categories_as_surveys:
+                    for question in qs_for_cat.order_by(preserved).all():
+                        self.add_question(question, data)
+                else:
+                    for question in self.survey.questions.order_by(preserved).all():
+                        self.add_question(question, data)
+
+    def get_qs_for_cat(self):
+        if self.survey.categories_as_surveys:
+            qs_for_cat = self.survey.questions.filter(
+                category_id=self.scope_category_id).order_by("order", "id")
+            ordered_ids = self.get_ordered_question_ids(
+                qs_for_cat.filter(order__isnull=False).order_by("order"),
+                qs_for_cat.filter(order__isnull=True).order_by("id"),
+            )
+            return qs_for_cat, ordered_ids
+        else:
+            # If additionally there are categories
+            ordered_ids = []
+            for cat in self.categories:
+                qs_for_cat = self.survey.questions.filter(category=cat).order_by("order", "id")
+                ordered_ids.extend(
+                    self.get_ordered_question_ids(
+                        qs_for_cat.filter(order__isnull=False).order_by("order"),
+                        qs_for_cat.filter(order__isnull=True).order_by("id"),
+                    )
+                )
+            return None, ordered_ids
 
     def current_categories(self):
+        if self.survey.categories_as_surveys:
+            return [Category.objects.get(pk=self.scope_category_id)]
+
         if self.survey.display_method == Survey.BY_CATEGORY:
             if self.step is not None and self.step < len(self.categories):
                 return [self.categories[self.step]]
@@ -173,9 +229,14 @@ class ResponseForm(models.ModelForm):
             self.response = None
         else:
             try:
-                self.response = Response.objects.prefetch_related("user", "survey").get(
-                    user=self.user, survey=self.survey
-                )
+                if self.survey.categories_as_surveys and self.survey.save_categories_separately:
+                    self.response = Response.objects.prefetch_related("user", "survey").get(
+                        user=self.user, survey=self.survey, category_id=self.scope_category_id
+                    )
+                else:
+                    self.response = Response.objects.prefetch_related("user", "survey").get(
+                        user=self.user, survey=self.survey, category__isnull=True
+                    )
             except Response.DoesNotExist:
                 LOGGER.debug("No saved response for '%s' for user %s", self.survey, self.user)
                 self.response = None
@@ -423,6 +484,8 @@ class ResponseForm(models.ModelForm):
         response.survey = self.survey
         response.interview_uuid = self.uuid
         response.random_seed = self.random_seed
+        if self.survey.categories_as_surveys:
+            response.category_id = self.scope_category_id
         if self.user.is_authenticated:
             response.user = self.user
         response.extra = self.extra
