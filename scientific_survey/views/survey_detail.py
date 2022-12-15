@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+from datetime import date, timedelta
 
 from django.conf import settings
 from django.shortcuts import Http404, redirect, render, reverse
@@ -103,6 +104,12 @@ class SurveyDetail(View):
         return render(request, template_name, context)
 
     def final_redirect(self, survey, response):
+        if survey.categories_as_surveys:
+            cats2choose = survey.get_bookable_categories()
+            if not cats2choose:
+                survey.expire_date = date.today() - timedelta(days=1)
+                survey.save()
+
         if survey.external_redirect:
             return redirect(survey.external_redirect)
         else:
