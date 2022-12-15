@@ -37,7 +37,7 @@ DEV_DEPENDENCIES = [
 
 setuptools.setup(
     name="django-scientific-survey",
-    version="0.1.2",
+    version="0.2.0",
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
