@@ -3,7 +3,6 @@
 import logging
 import random
 import uuid
-from datetime import date, timedelta
 from operator import itemgetter
 
 from django import forms
@@ -74,15 +73,12 @@ class ResponseForm(models.ModelForm):
         self.questions_to_randomize = self.survey.questions.filter(order__isnull=True)
         self.ordered_questions = self.survey.questions.filter(order__isnull=False)
 
+        self.__updated_scope_category = False
         self._try_scope_questions()
 
         self.questions_to_randomize = self.questions_to_randomize.order_by("id")
         self.ordered_questions = self.ordered_questions.order_by("order")
-
-        if self.survey.display_method == Survey.BY_CATEGORY:
-            self.steps_count = len(self.categories) + (1 if self.qs_with_no_cat else 0)
-        else:
-            self.steps_count = len(self.questions_to_randomize) + len(self.ordered_questions)
+        self.__get_steps_count()
 
         # will contain prefetched data to avoid multiple db calls
         self.response = False
@@ -95,12 +91,25 @@ class ResponseForm(models.ModelForm):
         if self.response:
             self.random_seed = self.response.random_seed
             self.extra = self.response.extra
+        elif self.__updated_scope_category:
+            booking, is_created = CategoryBooking.objects.get_or_create(
+                survey=self.survey, category_id=self.scope_category_id
+            )
+            if not is_created:
+                booking.filled_slots += 1
+                booking.save()
 
         self.add_questions(kwargs.get("data"))
 
         if not self.survey.editable_answers and self.response is not None:
             for name in self.fields.keys():
                 self.fields[name].widget.attrs["disabled"] = True
+
+    def __get_steps_count(self):
+        if self.survey.display_method == Survey.BY_CATEGORY:
+            self.steps_count = len(self.categories) + (1 if self.qs_with_no_cat else 0)
+        else:
+            self.steps_count = len(self.questions_to_randomize) + len(self.ordered_questions)
 
     def _try_scope_questions(self):
         if self.survey.categories_as_surveys:
@@ -110,22 +119,12 @@ class ResponseForm(models.ModelForm):
             self.ordered_questions = self.ordered_questions.filter(category_id=self.scope_category_id)
 
     def _try_find_scope_category(self):
-        booked = CategoryBooking.objects.filter(
-            survey=self.survey, is_active=True
-        ).values_list('category', flat=True)
-
-        random.seed(self.random_seed)
-        cats2choose = [x for x in self.categories if x.id not in booked]
+        cats2choose = self.survey.get_bookable_categories()
         if cats2choose:
+            random.seed(self.random_seed)
             scope_category = random.choice(cats2choose)
             self.scope_category_id = scope_category.pk
-            CategoryBooking.objects.get_or_create(
-                survey=self.survey, is_active=True, category=scope_category
-            )
-        else:
-            self.survey.expire_date = date.today() - timedelta(days=1)
-            self.survey.save()
-            return
+            self.__updated_scope_category = True
 
     def get_ordered_question_ids(self, questions2order, questions2randomize):
         ordered_pairs = questions2order.values_list("id", "order").all()

@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
-from datetime import date
 
 from django.conf import settings
-from django.shortcuts import redirect, render, reverse
+from django.shortcuts import Http404, redirect, render, reverse
 from django.views.generic import View
 
 from scientific_survey.decorators import survey_available
@@ -33,6 +32,11 @@ class SurveyDetail(View):
         if survey.need_logged_user and not request.user.is_authenticated:
             return redirect("%s?next=%s" % (settings.LOGIN_URL, request.path))
 
+        if survey.categories_as_surveys and step == 0:
+            cats2choose = survey.get_bookable_categories()
+            if not cats2choose:
+                raise Http404
+
         form = ResponseForm(
             survey=survey, user=request.user,
             step=step, seed=seed,
@@ -44,8 +48,6 @@ class SurveyDetail(View):
                 request.session[session_key] = {}
             request.session[session_key]["scope_cat"] = form.scope_category_id
             request.session.modified = True
-        if form.survey.expire_date < date.today():
-            return redirect('survey-full')
 
         categories = form.current_categories()
 

@@ -22,6 +22,7 @@ def survey_available(func):
             raise Http404
         if survey.publish_date > date.today():
             raise Http404
+
         return func(self, request, *args, **kwargs, survey=survey)
 
     return survey_check

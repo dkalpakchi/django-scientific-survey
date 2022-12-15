@@ -57,7 +57,7 @@ class ResponseAdmin(admin.ModelAdmin):
 class CategoryBookingAdmin(admin.ModelAdmin):
     # specifies the order as well as which fields to act on
     raw_id_fields = ("survey", "category")
-    list_display = ("survey", "category", "is_active")
+    list_display = ("survey", "category", "filled_slots")
 
 
 # admin.site.register(Question, QuestionInline)

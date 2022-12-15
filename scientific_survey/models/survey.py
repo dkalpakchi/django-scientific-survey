@@ -75,3 +75,9 @@ class Survey(models.Model):
 
     def is_all_in_one_page(self):
         return self.display_method == self.ALL_IN_ONE_PAGE
+
+    def get_bookable_categories(self):
+        booked = self.booked_categories.filter(
+            filled_slots__gte=models.F("category__max_responses")
+        ).values_list('category', flat=True)
+        return [x for x in self.categories.all() if x.id not in booked]
