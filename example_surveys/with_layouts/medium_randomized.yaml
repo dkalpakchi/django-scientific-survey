@@ -1,0 +1,148 @@
+name: My Second Survey
+layouts:
+  sentence_pairs:
+    template: 'Sentence: {{source}}<br>Paraphrase: {{paraphrase}}'
+    save: false
+  sentence_triples:
+    template: 'Sentence 1: {{s1}}<br>Sentence 2: {{s2}}<br>Sentence 3: <br>'
+    save: true
+  table_pairs: <table><thead><th>Sentence 1</th><th>Sentence 2</th>
+items:
+- question:
+    layout: sentence_pairs
+    scope:
+      source: Does it work?
+      paraphrase: Would it work?
+  required: true
+  extra:
+    model: A
+  order: -1
+  answer_sets:
+  - type: radio
+    name: Fluency
+    choices:
+    - '0'
+    - '1'
+    - '2'
+  - type: radio
+    name: Equivalence
+    choices:
+    - '0'
+    - '1'
+    - '2'
+    - '3'
+- question:
+    layout: sentence_pairs
+    scope:
+      source: Could it work?
+      paraphrase: Would it work?
+  required: true
+  extra:
+    model: B
+  order: -1
+  answer_sets:
+  - type: radio
+    name: Fluency
+    choices:
+    - '0'
+    - '1'
+    - '2'
+  - type: radio
+    name: Equivalence
+    choices:
+    - '0'
+    - '1'
+    - '2'
+    - '3'
+- question:
+    layout: sentence_pairs
+    scope:
+      source: Why did you go shopping?
+      paraphrase: Why did you go shipping?
+  required: true
+  extra:
+    model: B
+  order: -1
+  answer_sets:
+  - type: radio
+    name: Fluency
+    choices:
+    - '0'
+    - '1'
+    - '2'
+  - type: radio
+    name: Equivalence
+    choices:
+    - '0'
+    - '1'
+    - '2'
+    - '3'
+- question:
+    layout: sentence_pairs
+    scope:
+      source: Was it cold for you today?
+      paraphrase: Were you freezing?
+  required: true
+  extra:
+    model: A
+  order: -1
+  answer_sets:
+  - type: radio
+    name: Fluency
+    choices:
+    - '0'
+    - '1'
+    - '2'
+  - type: radio
+    name: Equivalence
+    choices:
+    - '0'
+    - '1'
+    - '2'
+    - '3'
+- question:
+    layout: sentence_pairs
+    scope:
+      source: How high is the tallest mountain in Europe?
+      paraphrase: How tall is the highest mountain in Europe?
+  required: true
+  extra:
+    model: B
+  order: -1
+  answer_sets:
+  - type: radio
+    name: Fluency
+    choices:
+    - '0'
+    - '1'
+    - '2'
+  - type: radio
+    name: Equivalence
+    choices:
+    - '0'
+    - '1'
+    - '2'
+    - '3'
+- question:
+    layout: sentence_pairs
+    scope:
+      source: How sweet is sour cream?
+      paraphrase: How sour is sweet cream?
+  required: true
+  extra:
+    model: A
+  order: -1
+  answer_sets:
+  - type: radio
+    name: Fluency
+    choices:
+    - '0'
+    - '1'
+    - '2'
+  - type: radio
+    name: Equivalence
+    choices:
+    - '0'
+    - '1'
+    - '2'
+    - '3'

@@ -21,7 +21,7 @@ DEPENDENCIES = [
     "django-nested-admin>=3.3.3",
     "pytz>=2018.9",
     "ordereddict>=1.1",
-    "pyyaml>=4.2b1",
+    "pyyaml>=6.0",
     "django-tinymce4-lite==1.8.0",
 ]
 DEV_DEPENDENCIES = [
