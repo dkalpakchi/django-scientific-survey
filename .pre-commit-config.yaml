@@ -18,6 +18,7 @@ repos:
     -   id: end-of-file-fixer
     -   id: check-json
     -   id: check-xml
+    -   id: check-yaml
     -   id: flake8
         args: [--config=.flake8]
 -   repo: https://github.com/PyCQA/isort
