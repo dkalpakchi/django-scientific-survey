@@ -5,7 +5,7 @@
   <table class="table table-hover">
     <tbody>
       <tr>
-        <th>{{ forloop.counter}}. {{ question }}</th>
+        <th>{{ question|safe }}</th>
       </tr>
       {% for form, prefix, suffix in fields %}
         {% if form.field.widget.attrs.category == category.name or not form.field.widget.attrs.category %}

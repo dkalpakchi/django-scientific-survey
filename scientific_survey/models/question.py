@@ -3,6 +3,7 @@
 import logging
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -29,6 +30,14 @@ ORDER_HELP_TEXT = _(
 class SortAnswer:
     CARDINAL = "cardinal"
     ALPHANUMERIC = "alphanumeric"
+
+
+class Layout(models.Model):
+    codename = models.CharField(_("Code name"), max_length=30)
+    template = models.TextField(_("Template"))
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name=_("owner"), null=True, blank=True)
+    is_public = models.BooleanField(_("is public?"), default=False,
+                                    help_text=_("Whether to make the layout available to other users"))
 
 
 class Question(models.Model):

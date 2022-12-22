@@ -5,7 +5,7 @@ from django.contrib import admin
 
 from scientific_survey.actions import make_published
 from scientific_survey.exporter.json import Survey2Json
-from scientific_survey.models import Answer, AnswerGroup, Category, CategoryBooking, Question, Response, Survey
+from scientific_survey.models import Answer, AnswerGroup, Category, CategoryBooking, Layout, Question, Response, Survey
 
 
 class AnswerGroupInline(nested_admin.NestedStackedInline):
@@ -60,8 +60,14 @@ class CategoryBookingAdmin(admin.ModelAdmin):
     list_display = ("survey", "category", "filled_slots")
 
 
+class LayoutAdmin(admin.ModelAdmin):
+    # specifies the order as well as which fields to act on
+    list_display = ("codename", "owner")
+
+
 # admin.site.register(Question, QuestionInline)
 # admin.site.register(Category, CategoryInline)
 admin.site.register(Survey, SurveyAdmin)
 admin.site.register(Response, ResponseAdmin)
 admin.site.register(CategoryBooking, CategoryBookingAdmin)
+admin.site.register(Layout, LayoutAdmin)

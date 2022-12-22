@@ -2,6 +2,7 @@
 from datetime import timedelta
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
@@ -45,6 +46,7 @@ class Survey(models.Model):
     publish_date = models.DateField(_("Publication date"), blank=True, null=False, default=now)
     expire_date = models.DateField(_("Expiration date"), blank=True, null=False, default=in_duration_day)
     external_redirect = models.URLField(max_length=2000, null=True, blank=True)
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name=_("owner"))
 
     class Meta:
         verbose_name = _("survey")

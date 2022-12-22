@@ -1,12 +1,26 @@
-name: My Second Survey
+name: My First Survey With Layouts
 layouts:
   sentence_pairs:
-    template: 'Sentence: {{source}}<br>Paraphrase: {{paraphrase}}'
+    template: 'Sentence: {source}<br>Paraphrase: {paraphrase}'
     save: false
   sentence_triples:
-    template: 'Sentence 1: {{s1}}<br>Sentence 2: {{s2}}<br>Sentence 3: <br>'
+    template: 'Sentence 1: {s1}<br>Sentence 2: {s2}<br>Sentence 3: {s3}<br>'
     save: true
-  table_pairs: <table><thead><th>Sentence 1</th><th>Sentence 2</th>
+  table_pairs: >
+    <table>
+      <thead>
+        <tr>
+          <th>Sentence 1</th>
+          <th>Sentence 2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{source}</td>
+          <td>{paraphrase}<td>
+        </tr>
+      </tbody>
+    </table>
 items:
 - question:
     layout: sentence_pairs
@@ -55,7 +69,7 @@ items:
     - '2'
     - '3'
 - question:
-    layout: sentence_pairs
+    layout: table_pairs
     scope:
       source: Why did you go shopping?
       paraphrase: Why did you go shipping?
