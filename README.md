@@ -18,6 +18,7 @@ The following changes were made to the original app to accommodate scientific us
 * Added the possibility to import surveys from a JSON file.
 * [New in v0.1.2] Added the possibility to add ranges (sliders) as question types, distinguishing between integer ranges (`range_int`) and float ranges (`range_float`). It is possible to specify min, max and step for the range by re-using the already existing `choices` field.
 * [New in v0.2.0] Categories can be treated as independent sub-surveys! This is useful if one wants to create a number of batches all of which are aimed at answering the same research question, but the experimental design requires each participant to see their own batch of questions. Additionally, one can control a number of responses per batch (1 by default).
+* [New in v0.3.0] Added the possibility to specify and save template layouts for questions. Changed JSON to YAML when importing surveys to enable multiline layouts.
 
 Recognizing that these changes are not necessarily useful for the users of the original "django-survey-and-report" app (and that the code became more different from the original than expected initially), it was decided to create a separate package "django-scientific-survey" to acommodate these changes.
 
