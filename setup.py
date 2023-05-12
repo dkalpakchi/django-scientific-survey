@@ -15,7 +15,7 @@ with open(path.join(THIS_DIRECTORY, "README.md"), encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()
 
 DEPENDENCIES = [
-    "django>=2.2,<=3.2.18",
+    "django>=2.2,<=3.2.19",
     "django-bootstrap-form>=3.4",
     "django-registration>=3.0",
     "django-nested-admin>=3.3.3",
@@ -37,7 +37,7 @@ DEV_DEPENDENCIES = [
 
 setuptools.setup(
     name="django-scientific-survey",
-    version="0.3.1",
+    version="0.3.2",
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",

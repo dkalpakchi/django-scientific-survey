@@ -21,7 +21,3 @@ repos:
     -   id: check-yaml
     -   id: flake8
         args: [--config=.flake8]
--   repo: https://github.com/PyCQA/isort
-    rev: 5.5.4
-    hooks:
-    -   id: isort
